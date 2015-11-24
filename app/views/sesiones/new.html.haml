@@ -1,0 +1,25 @@
+.row
+  .small-12.medium-6.small-centered.columns
+    %h3 Iniciar sesión
+
+= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  .row
+    .small-12.medium-6.small-centered.columns
+      = devise_error_messages!
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :email, autofocus: true
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :password, autocomplete: "off"
+
+  - if devise_mapping.rememberable?
+    .row
+      .small-12.medium-6.small-centered.columns
+        = f.input :remember_me, as: :boolean, inline_label: "No cerrar la sesión"
+
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.button :submit, "Iniciar sesión", {class: "small round"}
+
+= render "devise/shared/links"

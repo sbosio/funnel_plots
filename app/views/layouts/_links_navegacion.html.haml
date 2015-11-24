@@ -1,0 +1,21 @@
+- if usuario_autenticado?
+  %li{ class: nav_bar_activo?("visitantes")}
+    = link_to 'Inicio', root_path
+  -# Ejemplo de opción de menú con verificación de permisos de Acl9
+  -# if usuario_actual.has_role?("rol", on: Modelo)
+    %li.has-dropdown{ class: nav_bar_activo?("modelos")}
+      = link_to 'Modelo', "#"
+      %ul.dropdown
+        - if usuario_actual.has_role?("rol", on: Modelo)
+          %li
+            = link_to 'Acción', ruta
+  - if usuario_actual.has_role?("administrar", on: Usuario)
+    %li.has-dropdown{ class: nav_bar_activo?("administracion")}
+      = link_to 'Administración', '#'
+      %ul.dropdown
+        - if usuario_actual.has_role?("administrar", on: Usuario) || usuario_actual.has_role?("ver", on: Usuario)
+          %li
+            = link_to 'Usuarios', usuarios_path
+        - if usuario_actual.has_role?("administrar", on: RolAsignable) || usuario_actual.has_role?("ver", on: RolAsignable)
+          %li
+            = link_to 'Roles asignables', roles_asignables_path

@@ -1,0 +1,15 @@
+.row
+  .small-12.medium-9.large-6.columns.end
+    %h3 Seleccionar UGSP
+
+= simple_form_for(usuario_actual, url: establecer_ugsp_path, method: :put) do |f|
+
+  .row
+    .small-12.medium-9.large-6.columns.end
+      .form-inputs
+        = f.input :unidad_de_gestion_id, collection: usuario_actual.unidades_de_gestion, label_method: :nombre
+
+  .row
+    .small-12.medium-9.large-6.columns.end
+      .form-actions
+        = f.submit "Seleccionar unidad de gestion", class: "button small radius"

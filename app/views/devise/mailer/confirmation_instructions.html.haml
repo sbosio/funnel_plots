@@ -1,0 +1,11 @@
+%p
+  - if @resource.sexo == Sexo.find_by_codigo("F")
+    Bienvenida
+  - else
+    Bienvenido
+  = @resource.nombre.to_s.titleize
+
+%p Debes confirmar tu dirección de correo electrónico a través del siguiente enlace:
+
+%p
+  = link_to 'Confirmar mi dirección', confirmation_url(@resource, confirmation_token: @token)

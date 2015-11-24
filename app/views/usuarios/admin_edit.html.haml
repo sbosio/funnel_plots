@@ -1,0 +1,42 @@
+= content_for :panel do 
+  = render partial: 'shared/panel', locals: {titulo: "Usuarios", accion: "Modificación de roles", botones: [{texto: "Volver al listado", ruta: usuarios_path}] }
+
+.row
+  .small-12.columns
+    = render :partial => "shared/errores_crud", :locals => { :registro => @usuario }
+
+.row
+  .small-12.columns
+    %h3
+      = @usuario.nombre_y_apellido 
+  .small-12.columns
+    %h4.subheader
+      = @usuario.email
+
+= simple_form_for(@usuario, url: update_usuario_path(@usuario), method: :put) do |f|
+  .row
+    .small-12.columns
+      %h3 Autorizaciones del usuario
+  .row
+    .small-12.columns
+      %h4.subheader Roles asignados al usuario
+  .row
+    .small-12.medium-6.columns.end
+      = f.association :roles_asignados, label_method: :nombre, label: false
+  .row.hide-for-touch
+    .small-12.medium-6.columns.end
+      %p{style: "font-size: 0.8rem; color: gray; margin-top: -0.75rem;"}
+        Mantén presionado 'CTRL' al hacer clic para seleccionar más de una opción.
+  .row
+    .small-12.columns
+      %h4.subheader Unidades de gestión asociadas
+  .row
+    .small-12.medium-6.columns.end
+      = f.association :unidades_de_gestion, label_method: :nombre, label: false
+  .row.hide-for-touch
+    .small-12.medium-6.columns.end
+      %p{style: "font-size: 0.8rem; color: gray; margin-top: -0.75rem;"}
+        Mantén presionado 'CTRL' al hacer clic para seleccionar más de una opción.
+  .row
+    .small-12.medium-6.columns
+      = f.button :submit, "Guardar modificaciones", {class: "small round"}

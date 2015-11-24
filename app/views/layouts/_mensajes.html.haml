@@ -1,0 +1,10 @@
+-# Rails flash messages styled for Zurb Foundation
+- flash.each do |name, msg|
+  - if msg.is_a?(String)
+    .alert-box.radius{"data-alert" => "", :class => (name.to_s == 'notice' ? 'success' : 'alert')}
+      = msg
+      %a.close{:href => "#"} &times;
+    
+
+  
+

@@ -1,0 +1,18 @@
+= content_for :panel do 
+  = render partial: 'shared/panel', locals: {titulo: "Usuarios", accion: "Agregar un rol", botones: [{texto: "Volver", ruta: edit_roles_de_usuario_path(@usuario)}] }
+
+.row
+  .small-12.columns
+    = render :partial => "shared/errores_crud", :locals => { :registro => @usuario }
+
+= simple_form_for(@usuario, url: edit_roles_de_usuario_path(@usuario), method: :post) do |f|
+  .row
+    .small-12.medium-6.columns.end
+      = f.input :rol_asignable_id, collection: RolAsignable.all.order(:nombre), label_method: :nombre, value_method: :codigo
+
+  .row
+    .small-12.medium-6.columns.end
+      = f.association :unidades_de_gestion, as: :check_boxes, label_method: :nombre
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.button :submit, "Agregar rol", {class: "small round"}

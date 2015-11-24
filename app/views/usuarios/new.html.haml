@@ -1,0 +1,33 @@
+.row
+  .small-12.medium-6.small-centered.columns
+    %h3 Crear una cuenta
+
+= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :nombre, autofocus: true
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :apellido
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.association :sexo, label_method: :nombre
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :email, as: :email
+  - if @minimum_password_length
+    .row
+      .small-12.medium-6.small-centered.columns
+        = f.input :password, autocomplete: "off", placeholder: "#{@minimum_password_length} caracteres como mínimo"
+  - else
+    .row
+      .small-12.medium-6.small-centered.columns
+        = f.input :password, autocomplete: "off"
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :password_confirmation, autocomplete: "off"
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.button :submit, "Crear la cuenta", {class: "small round"}
+
+= render "devise/shared/links"

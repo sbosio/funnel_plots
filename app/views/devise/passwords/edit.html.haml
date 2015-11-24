@@ -1,0 +1,29 @@
+.row
+  .small-12.medium-6.small-centered.columns
+    %h3 Cambiar la contraseña
+
+= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+  .row
+    .small-12.medium-6.small-centered.columns
+      = devise_error_messages!
+
+  = f.hidden_field :reset_password_token
+
+  - if @minimum_password_length
+    .row
+      .small-12.medium-6.small-centered.columns
+        = f.input :password, label: "Nueva contraseña", autocomplete: "off", placeholder: "#{@minimum_password_length} caracteres como mínimo", autofocus: true
+  - else
+    .row
+      .small-12.medium-6.small-centered.columns
+        = f.input :password, label: "Nueva contraseña", autocomplete: "off", autofocus: true
+
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :password_confirmation, autocomplete: "off"
+
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.button :submit, "Cambiar la contraseña"
+
+= render "devise/shared/links"

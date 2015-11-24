@@ -1,0 +1,13 @@
+.row
+  .small-12.medium-6.small-centered.columns
+    %h3 Reenviar las instrucciones de confirmación
+
+= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.input :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email)
+  .row
+    .small-12.medium-6.small-centered.columns
+      = f.button :submit, "Reenviar las instrucciones"
+
+= render "devise/shared/links"

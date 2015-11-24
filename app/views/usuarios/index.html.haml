@@ -1,0 +1,62 @@
+= content_for :panel do 
+  = render partial: 'shared/panel', locals: {titulo: "Usuarios", accion: "Listado" }
+
+.row.show-for-large-up
+  .large-12.columns
+    %table{ summary: "Listado de usuarios del sistema. Puedes utilizar la primer columna para ubicar un usuario según su nombre y apellido, luego leyendo a través de esa fila encontrarás su dirección de correo electrónico, los roles asignados, la última vez que ingresó al sistema y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+      %caption Listado de usuarios
+      %thead
+        %tr
+          %th{scope: "column"} Nombre y apellido
+          %th{scope: "column"} Correo electrónico
+          %th{scope: "column"} Roles asignados
+          %th{scope: "column"} Último ingreso
+          %th{scope: "column", colspan: 2, style: "text-align: center;"} Acciones
+      %tbody
+        - @usuarios.each do |usuario|
+          %tr
+            %td{scope: "row"}= usuario.nombre_y_apellido 
+            %td= usuario.email
+            %td= usuario.roles_asignados.collect{|rol| rol.nombre}.join(", ")
+            %td
+              - if usuario.current_sign_in_at.present?
+                = "Día #{usuario.current_sign_in_at.strftime("%d/%m/%Y")}, a las #{usuario.current_sign_in_at.strftime("%H:%M:%S")}, desde la IP #{usuario.current_sign_in_ip}"
+              - else
+                No registra ningún ingreso
+            %td= link_to 'Modificar roles', (usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? "#" : edit_usuario_path(usuario)), class: "boton_de_accion#{usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? ' disabled' : ''}"
+            %td= link_to 'Eliminar la cuenta', (usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? "#" : destroy_usuario_path(usuario)), (usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? { class: "boton_de_accion alert disabled" } : { method: :delete, data: { confirm: { title: "¿Estás seguro?", body: "La acción de eliminar una cuenta no se puede deshacer.", ok: "Eliminar la cuenta", cancel: "Cancelar", prompt: "Escribe '%s' para habilitar la eliminación", password: "eliminar" } }, class: "boton_de_accion alert" })
+
+.hide-for-large-up
+  .row
+    .small-11.small-centered.columns
+      %h5 Listado de usuarios
+
+  .row
+    .small-11.small-centered.columns
+      %div{class: "carousel"}
+        - @usuarios.each do |usuario|
+          %div
+            %table{ summary: "Listado de usuarios. Se presenta un usuario a la vez. Arrastra para cambiar de usuario. La primer fila contiene el nombre y apellido, hacia abao encontrarás la dirección de correo electrónico, los roles asignados, la última vez que ingresó al sistema y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%" }
+              %thead
+              %tbody
+                %tr
+                  %th{scope: "row", width: "35%"} Nombre y apellido
+                  %td= usuario.nombre_y_apellido 
+                %tr
+                  %th{scope: "row"} Correo electrónico
+                  %td= usuario.email
+                %tr
+                  %th{scope: "row"} Roles asignados
+                  %td= usuario.roles_asignados.collect{|rol| rol.nombre}.join(", ")
+                %tr
+                  %th{scope: "row"} Último ingreso
+                  %td
+                    - if usuario.current_sign_in_at.present?
+                      = "Día #{usuario.current_sign_in_at.strftime("%d/%m/%Y")}, a las #{usuario.current_sign_in_at.strftime("%H:%M:%S")}, desde la IP #{usuario.current_sign_in_ip}"
+                    - else
+                      No registra ningún ingreso
+                %tr
+                  %th{scope: "row", rowspan: 2 } Acciones
+                  %td= link_to 'Modificar roles', (usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? "#" : edit_usuario_path(usuario)), class: "boton_de_accion#{usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? ' disabled' : ''}"
+                %tr
+                  %td= link_to 'Eliminar la cuenta', (usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? "#" : destroy_usuario_path(usuario)), (usuario.id == 1 || !usuario_actual.has_role?("administrar", on: Usuario) ? { class: "boton_de_accion alert disabled" } : { method: :delete, data: { confirm: { title: "¿Estás seguro?", body: "La acción de eliminar una cuenta no se puede deshacer.", ok: "Eliminar la cuenta", cancel: "Cancelar", prompt: "Escribe '%s' para habilitar la eliminación", password: "eliminar" } }, class: "boton_de_accion alert" })

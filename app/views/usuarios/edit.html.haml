@@ -1,0 +1,48 @@
+= content_for :panel do 
+  = render partial: 'shared/panel', locals: {titulo: "Usuarios", accion: "Modificar perfil" }
+
+.row
+  .small-12.columns
+    %h3 Modificar mi perfil de usuario
+
+= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+  .row
+    .small-12.medium-6.large-3.columns
+      = f.input :nombre, autofocus: true
+    .small-12.medium-6.large-3.columns
+      = f.input :apellido
+    .small-12.medium-4.large-2.columns
+      = f.association :sexo, label_method: :nombre
+    .small-12.medium-8.large-4.columns
+      = f.input :email, as: :email
+  
+    - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+      .small-12.columns
+        Actualmente aguardando la confirmación de:
+        = resource.unconfirmed_email
+    - if @minimum_password_length
+      .small-12.medium-6.large-3.columns
+        = f.input :password, autocomplete: "off", placeholder: "(#{@minimum_password_length} caracteres como mínimo)"
+    - else
+      .small-12.medium-6.large-3.columns
+        = f.input :password, autocomplete: "off"
+    .small-12.medium-6.large-3.columns.end
+      = f.input :password_confirmation, autocomplete: "off"
+
+  .row
+    .small-12.medium-12.large-6.columns.end
+      %p{style: "font-size: 0.75rem; color: gray; margin-top: -0.5rem;"}
+        Deja estos campos en blanco si no deseas cambiar tu contraseña.
+
+  .row
+    .small-12.medium-8.large-4.columns
+      = f.input :current_password
+  .row
+    .small-12.medium-12.large-6.columns.end
+      %p{style: "font-size: 0.75rem; color: gray; margin-top: -0.5rem;"}
+        Es necesaria tu contraseña actual para validar los cambios
+
+
+  .row
+    .small-12.columns
+      = f.button :submit, "Guardar cambios", {class: "small radius"}

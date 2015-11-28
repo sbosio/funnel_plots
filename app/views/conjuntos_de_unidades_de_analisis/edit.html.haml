@@ -1,0 +1,4 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Conjuntos de unidades de análisis", accion: "Modificar", botones: [{texto: "Listado", ruta: conjuntos_de_unidades_de_analisis_path}]}
+
+= render 'form'

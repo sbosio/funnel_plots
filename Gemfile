@@ -21,9 +21,20 @@ gem 'acl9'
 gem 'cocaine'
 gem 'user_stamp'
 gem 'simple_form'
+gem 'highcharts-rails'
+gem 'lazy_high_charts'
+gem 'statistics2'
+gem 'nested_form'
 
 group :development, :test do
-  gem 'byebug'
+  gem 'web-console', '~> 2.0'
+  gem 'meta_request'
+  gem 'better_errors'
+  gem "binding_of_caller"
+  gem 'quiet_assets'
+  gem 'hirb-unicode'
+  gem 'thin'
+  gem 'bullet'
   gem 'web-console', '~> 2.0'
 end
 

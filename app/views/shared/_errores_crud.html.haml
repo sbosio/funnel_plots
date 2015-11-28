@@ -1,7 +1,7 @@
 - if registro.errors.any?
   .alert-box.radius.alert{'data-alert' => "true"}
     - cantidad_de_errores = registro.errors.messages.sum{|atr, err| err.keep_if{|e| e.present?}.size} # Uso esto para eliminar de la cuenta los mensajes vacíos
-    = "#{cantidad_de_errores} errores #{(cantidad_de_errores > 1) ? "impiden" : "impide"} que se guarden las modificaciones:"
+    = "#{cantidad_de_errores} #{(cantidad_de_errores > 1) ? "errores impiden" : "error impide"} que se guarden las modificaciones:"
     %br
       - mensajes = []
       - registro.errors.messages.each do |atributo, errores|

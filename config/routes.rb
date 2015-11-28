@@ -2,6 +2,12 @@ Rails.application.routes.draw do
 
   root to: 'visitantes#index'
 
+  resources :conjuntos_de_unidades_de_analisis
+  resources :unidades_de_analisis, only: [:show, :edit, :update, :destroy]
+  resources :covariables
+  resources :categorias_de_la_covariable, only: [:show, :edit, :update, :destroy]
+  resources :conjuntos_de_datos
+
   devise_for :usuarios, controllers: { sessions: "sesiones", registrations: "usuarios", passwords: "passwords" }
   devise_scope :usuario do
     get "usuarios", to: "usuarios#index", as: :usuarios

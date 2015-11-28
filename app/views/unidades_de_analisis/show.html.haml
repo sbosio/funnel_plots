@@ -1,0 +1,17 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Unidades de análisis", accion: "Ver", botones: [{texto: "Conjunto", ruta: conjunto_de_unidades_de_analisis_path(@unidad_de_analisis.conjunto_de_unidades_de_analisis)}, {texto: "Modificar", ruta: edit_unidad_de_analisis_path(@unidad_de_analisis)}]}
+
+.row
+  .small-12.columns
+    %h5= @unidad_de_analisis.nombre
+.row
+  .small-12.columns
+    %label Descripción
+    %h6.input-panel
+      - @unidad_de_analisis.descripcion.split("\n").each do |linea|
+        = linea
+        %br
+.row
+  .small-12.columns
+    %label Pertenece al conjunto de unidades de análisis
+    %h6.input-panel= @unidad_de_analisis.conjunto_de_unidades_de_analisis.nombre

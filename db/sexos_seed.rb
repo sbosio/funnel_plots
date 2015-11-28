@@ -8,7 +8,7 @@ Sexo.create([
     codigo: "M"
   },
   {
-    nombre: "Indeterminado",
-    codigo: "I"
+    nombre: "Otro",
+    codigo: "O"
   }
 ])

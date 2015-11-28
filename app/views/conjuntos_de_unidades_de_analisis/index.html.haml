@@ -1,0 +1,72 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Conjuntos de unidades de análisis", accion: "Listado", |
+    botones: [{texto: "Crear", ruta: new_conjunto_de_unidades_de_analisis_path}]}
+
+- limite_de_unidades = 10
+
+.row.show-for-medium-up
+  .medium-12.columns
+    %table{ summary: "Listado de conjuntos de unidades de análisis. Puedes utilizar la primer columna para ubicar un conjunto por su nombre, luego leyendo a través de esa fila podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+      %thead
+        %tr
+          %th{scope: "column"} Nombre
+          %th{scope: "column"} Descripción
+          %th{scope: "column"} Unidades de análisis
+          %th{scope: "column"} Tipología
+          %th{scope: "column", colspan: 3, style: "text-align: center;"} Acciones
+      %tbody
+        - @conjuntos_de_unidades_de_analisis.each do |conjunto|
+          - cantidad_de_unidades = conjunto.unidades_de_analisis.size
+          %tr
+            %td= conjunto.nombre
+            %td= conjunto.descripcion_corta
+            - if cantidad_de_unidades > limite_de_unidades
+              %td
+                = conjunto.unidades_de_analisis.limit(limite_de_unidades).map{|u| "'" + u.nombre + "'"}.join("; ") +  "; ..."
+                = (cantidad_de_unidades - limite_de_unidades) > 1 ? "(#{(cantidad_de_unidades - limite_de_unidades).to_s} unidades más)" : "(una unidad más)"
+            - else
+              %td
+                = conjunto.unidades_de_analisis.map{|u| "'" + u.nombre + "'"}.join("; ")
+            %td= conjunto.tipo_de_unidades_de_analisis.nombre
+            %td= link_to '', conjunto, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+            %td= link_to '', edit_conjunto_de_unidades_de_analisis_path(conjunto), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar" 
+            %td
+              - if conjunto.modificable?
+                = link_to '', conjunto, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de unidades de análisis no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+              - else
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+
+.row.show-for-small-only
+  %div{class: "carousel"}
+    - @conjuntos_de_unidades_de_analisis.each do |conjunto|
+      - cantidad_de_unidades = conjunto.unidades_de_analisis.size
+      %div
+        %table{ summary: "Listado de conjuntos de unidades de análisis. Se presenta un conjunto a la vez. Arrastra para cambiar entre conjuntos. La primer fila es el nombre del conjunto, luego leyendo hacia abajo a través de la columna podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+          %thead
+          %tbody
+            %tr
+              %th{scope: "row", width: "35%"} Nombre
+              %td= conjunto.nombre
+            %tr
+              %th{scope: "row"} Descripción
+              %td= conjunto.descripcion_corta
+            %tr
+              %th{scope: "row"} Unidades
+              %td
+                - if cantidad_de_unidades > limite_de_unidades
+                  = conjunto.unidades_de_analisis.limit(limite_de_unidades).map{|u| "'" + u.nombre + "'"}.join("; ") +  "; ..."
+                  = (cantidad_de_unidades - limite_de_unidades) > 1 ? "(#{(cantidad_de_unidades - limite_de_unidades).to_s} unidades más)" : "(una unidad más)"
+                - else
+                  = conjunto.unidades_de_analisis.map{|u| "'" + u.nombre + "'"}.join("; ")
+            %tr
+              %th{scope: "row"} Tipología
+              %td= conjunto.tipo_de_unidades_de_analisis.nombre
+            %tr
+              %th{scope: "row", rowspan: 3} Acciones
+              %td
+                = link_to '', conjunto, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+                = link_to '', edit_conjunto_de_unidades_de_analisis_path(conjunto), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                - if conjunto.modificable?
+                  = link_to '', conjunto, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de unidades de análisis no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                - else
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"

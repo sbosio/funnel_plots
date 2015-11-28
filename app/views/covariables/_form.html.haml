@@ -1,0 +1,33 @@
+.row
+  .small-12.columns
+    = render partial: 'shared/errores_crud', locals: { registro: @covariable }
+
+= simple_nested_form_for(@covariable) do |f|
+  .row
+    .small-12.columns
+      = f.input :nombre
+
+  .row
+    .small-12.columns
+      = f.input :descripcion
+
+  .row
+    .small-12.columns
+      %h5 Categorías de la covariable
+
+  #categorias_de_la_covariable
+    = f.fields_for :categorias_de_la_covariable
+
+  .row
+    .small-12.columns
+      - if @covariable.modificable?
+        = f.link_to_add '', :categorias_de_la_covariable, { class: "boton_de_accion fi-plus", 'aria-haspopup': "true", title: "Agregar" }
+      - else
+        = link_to '', "#", { class: "boton_de_accion fi-plus disabled", 'aria-haspopup': "true", title: "No se puede agregar"}
+
+  %br
+  %br
+
+  .row
+    .small-12.columns
+      = f.button :submit, "Guardar"

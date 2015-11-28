@@ -13,9 +13,14 @@ es:
         email: 'Dirección de correo electrónico'
         password_confirmation: 'Confirmación de contraseña'
         current_password: 'Contraseña actual'
+        descripcion: 'Descripción'
       permiso_de_usuario:
         name: "Autorización"
         authorizable_type: "Objetos autorizados"
       usuario:
         new:
           email: 'Dirección de correo electrónico'
+      conjunto_de_unidades_de_analisis:
+        nombre: 'Nombre del conjunto'
+        tipo_de_unidades_de_analisis: 'Tipo de las unidades de análisis'
+        descripcion: 'Descripción del conjunto'

@@ -15,9 +15,12 @@
     %main{:role => "main"}
       .row.collapse.full-width
         .small-12.columns
-          .panel
-            = content_for :panel
+          .panel{style: "padding: 0.5rem"}
+            = yield :panel
       .row
         .small-12.columns
           = render 'layouts/mensajes'
+      .row.show-for-small-only
+        .small-12.columns
+          = yield :titulo_en_cuerpo
       = yield

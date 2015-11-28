@@ -1,0 +1,20 @@
+.row
+  .small-4.columns
+    .row.collapse
+      .small-4.columns
+        %span.prefix
+          = f.label :nombre, class: "center inline"
+      .small-8.columns
+        = f.input :nombre, label: false
+  .small-7.columns.hide-for-small-only
+    .row.collapse
+      .small-3.columns
+        %span.prefix
+          = f.label :descripcion, class: "center inline"
+      .small-9.columns
+        = f.input :descripcion, label: false, as: :string
+  .small-1.columns.end
+    - if @covariable.modificable?
+      = f.link_to_remove '', { class: "boton_de_accion alert fi-trash", style: "margin-top: 0.5rem;", 'aria-haspopup': "true", title: "Eliminar" }
+    - else
+      = link_to '', "#", {class: "boton_de_accion alert fi-trash disabled", style: "margin-top: 0.5rem;", 'aria-haspopup': "true", title: "No se puede eliminar"}

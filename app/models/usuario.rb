@@ -11,13 +11,6 @@ class Usuario < ActiveRecord::Base
   belongs_to :sexo
   has_and_belongs_to_many :roles_asignados, class_name: "RolAsignable", join_table: "roles_asignables_usuarios"
 
-  # Atributo virtual para seleccionar una UGSP cuando es necesario
-  attr_accessor :unidad_de_gestion_id
-
-  # Usuarios asignados a tareas
-  has_many :asignaciones_como_supervisor, class_name: "TareaDeAuditoria", foreign_key: 'supervisor_id'
-  has_many :asignaciones_como_auditor, class_name: "TareaDeAuditoria", foreign_key: 'auditor_id'
-
   def self.no_eliminados
     self.where(cuenta_eliminada: false)
   end

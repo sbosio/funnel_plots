@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  descripcion: MyString
+  conjunto_de_unidades_de_analisis_id: 
+  created_user_id: 
+  updated_user_id: 
+
+two:
+  nombre: MyString
+  descripcion: MyString
+  conjunto_de_unidades_de_analisis_id: 
+  created_user_id: 
+  updated_user_id: 

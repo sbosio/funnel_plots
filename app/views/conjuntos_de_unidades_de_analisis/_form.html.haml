@@ -1,0 +1,38 @@
+.row
+  .small-12.columns
+    = render partial: 'shared/errores_crud', locals: { registro: @conjunto_de_unidades_de_analisis }
+
+= simple_nested_form_for(@conjunto_de_unidades_de_analisis) do |f|
+  .row
+    .small-12.medium-6.large-8.columns
+      = f.input :nombre
+    - if @conjunto_de_unidades_de_analisis.modificable?
+      .small-12.medium-6.large-4.columns.end
+        = f.association :tipo_de_unidades_de_analisis, label_method: :nombre
+    - else
+      .small-12.medium-6.large-4.columns.end
+        = f.association :tipo_de_unidades_de_analisis, label_method: :nombre, input_html: {disabled: 'disabled'}
+  .row
+    .small-12.columns
+      = f.input :descripcion
+
+  .row
+    .small-12.columns
+      %h5 Unidades de análisis del conjunto
+
+  #unidades_de_analisis
+    = f.fields_for :unidades_de_analisis
+
+  .row
+    .small-12.columns
+      - if @conjunto_de_unidades_de_analisis.modificable?
+        = f.link_to_add '', :unidades_de_analisis, { class: "boton_de_accion fi-plus", 'aria-haspopup': "true", title: "Agregar" }
+      - else
+        = link_to '', "#", { class: "boton_de_accion fi-plus disabled", 'aria-haspopup': "true", title: "No se puede agregar"}
+
+  %br
+  %br
+
+  .row
+    .small-12.medium-6.large-4.columns
+      = f.button :submit, "Guardar"

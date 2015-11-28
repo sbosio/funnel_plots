@@ -1,0 +1,27 @@
+%h1 Listing conjuntos_de_datos
+
+%table
+  %thead
+    %tr
+      %th Nombre
+      %th Descripcion
+      %th Created user
+      %th Updated user
+      %th
+      %th
+      %th
+
+  %tbody
+    - @conjuntos_de_datos.each do |conjunto_de_datos|
+      %tr
+        %td= conjunto_de_datos.nombre
+        %td= conjunto_de_datos.descripcion
+        %td= conjunto_de_datos.created_user
+        %td= conjunto_de_datos.updated_user
+        %td= link_to 'Show', conjunto_de_datos
+        %td= link_to 'Edit', edit_conjunto_de_datos_path(conjunto_de_datos)
+        %td= link_to 'Destroy', conjunto_de_datos, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Conjunto de datos', new_conjunto_de_datos_path

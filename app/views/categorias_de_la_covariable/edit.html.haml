@@ -1,0 +1,4 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Categorías de la covariable", accion: "Modificar", botones: [{texto: "Covariable", ruta: covariable_path(@categoria_de_la_covariable.covariable)}]}
+
+= render 'form'

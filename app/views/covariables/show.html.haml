@@ -1,0 +1,60 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Covariables", accion: "Ver", botones: [{texto: "Listado", ruta: covariables_path}, {texto: "Modificar", ruta: edit_covariable_path(@covariable)}]}
+
+.row
+  .small-12.columns
+    %h5= @covariable.nombre
+.row
+  .small-12.columns
+    %label Descripción
+    %h6.input-panel
+      - @covariable.descripcion.split("\n").each do |linea|
+        = linea
+        %br
+.row
+  .small-12.columns
+    %h6.subheader Categorías de esta covariable
+
+.row.show-for-medium-up
+  .medium-12.columns
+    %table{ summary: "Listado de categorías para esta covariable. Puedes utilizar la primer columna para ubicar una categoría por su nombre, luego leyendo a través de esa fila podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+      %thead
+        %tr
+          %th{scope: "column"} Nombre
+          %th{scope: "column"} Descripcion
+          %th{scope: "column", colspan: 3, width: "20%", style: "text-align: center;"} Acciones
+      %tbody
+        - @covariable.categorias_de_la_covariable.each do |categoria|
+          %tr
+            %td= categoria.nombre
+            %td= categoria.descripcion_corta
+            %td= link_to '', categoria, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+            %td= link_to '', edit_categoria_de_la_covariable_path(categoria), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+            %td
+              - if @covariable.modificable?
+                = link_to '', categoria, method: :delete, class: "fi-trash alert boton_de_accion", 'aria-haspopup': "true", title: "Eliminar" 
+              - else
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+
+.row.show-for-small-only
+  %div{class: "carousel"}
+    - @covariable.categorias_de_la_covariable.each do |categoria|
+      %div
+        %table{ summary: "Listado de categoriaes para esta covariable. Se presenta una categoría a la vez. Arrastra para cambiar entre categorías. La primer fila es el nombre de la categoría, luego leyendo hacia abajo a través de la columna podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+          %thead
+          %tbody
+            %tr
+              %th{scope: "row", width: "35%"} Nombre
+              %td= categoria.nombre
+            %tr
+              %th{scope: "row"} Descripción
+              %td= categoria.descripcion_corta
+            %tr
+              %th{scope: "row", rowspan: 3} Acciones
+              %td
+                = link_to '', categoria, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+                = link_to '', edit_categoria_de_la_covariable_path(categoria), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                - if @covariable.modificable?
+                  = link_to '', categoria, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un @covariable de categoriaes de análisis no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                - else
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"

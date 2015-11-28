@@ -1,0 +1,67 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Covariables", accion: "Listado", |
+    botones: [{texto: "Crear", ruta: new_covariable_path}]}
+
+- limite_de_categorias = 10
+
+.row.show-for-medium-up
+  .medium-12.columns
+    %table{ summary: "Listado de covariables. Puedes utilizar la primer columna para ubicar una covariable por su nombre, luego leyendo a través de esa fila podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+      %thead
+        %tr
+          %th{scope: "column"} Nombre
+          %th{scope: "column"} Descripción
+          %th{scope: "column"} Categorías
+          %th{scope: "column", colspan: 3, style: "text-align: center;"} Acciones
+      %tbody
+        - @covariables.each do |covariable|
+          - cantidad_de_categorias = covariable.categorias_de_la_covariable.size
+          %tr
+            %td= covariable.nombre
+            %td= covariable.descripcion_corta
+            - if cantidad_de_categorias > limite_de_categorias
+              %td
+                = covariable.categorias_de_la_covariable.limit(limite_de_categorias).map{|u| "'" + u.nombre + "'"}.join("; ") +  "; ..."
+                = (cantidad_de_categorias - limite_de_categorias) > 1 ? "(#{(cantidad_de_categorias - limite_de_categorias).to_s} unidades más)" : "(una unidad más)"
+            - else
+              %td
+                = covariable.categorias_de_la_covariable.map{|u| "'" + u.nombre + "'"}.join("; ")
+            %td= link_to '', covariable, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+            %td= link_to '', edit_covariable_path(covariable), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar" 
+            %td
+              - if covariable.modificable?
+                = link_to '', covariable, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar una covariable no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+              - else
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+
+.row.show-for-small-only
+  %div{class: "carousel"}
+    - @covariables.each do |covariable|
+      - cantidad_de_categorias = covariable.categorias_de_la_covariable.size
+      %div
+        %table{ summary: "Listado de covariables. Se presenta una covariable a la vez. Arrastra para cambiar entre covariables. La primer fila es el nombre de la covariable, luego leyendo hacia abajo a través de la columna podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+          %thead
+          %tbody
+            %tr
+              %th{scope: "row", width: "35%"} Nombre
+              %td= covariable.nombre
+            %tr
+              %th{scope: "row"} Descripción
+              %td= covariable.descripcion_corta
+            %tr
+              %th{scope: "row"} Categorías
+              %td
+                - if cantidad_de_categorias > limite_de_categorias
+                  = covariable.categorias_de_la_covariable.limit(limite_de_categorias).map{|u| "'" + u.nombre + "'"}.join("; ") +  "; ..."
+                  = (cantidad_de_categorias - limite_de_categorias) > 1 ? "(#{(cantidad_de_categorias - limite_de_categorias).to_s} unidades más)" : "(una unidad más)"
+                - else
+                  = covariable.categorias_de_la_covariable.map{|u| "'" + u.nombre + "'"}.join("; ")
+            %tr
+              %th{scope: "row", rowspan: 3} Acciones
+              %td
+                = link_to '', covariable, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+                = link_to '', edit_covariable_path(covariable), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                - if covariable.modificable?
+                  = link_to '', covariable, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar una covariable no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                - else
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"

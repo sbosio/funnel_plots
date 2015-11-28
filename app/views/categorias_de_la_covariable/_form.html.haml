@@ -1,0 +1,25 @@
+.row
+  .small-12.columns
+    = render partial: 'shared/errores_crud', locals: { registro: @categoria_de_la_covariable }
+
+= simple_form_for @categoria_de_la_covariable do |f|
+
+  .row
+    .small-12.columns
+      = f.input :nombre
+
+  .row
+    .small-12.columns
+      = f.input :descripcion
+
+  .row
+    .small-12.columns
+      %label Pertenece a la covariable
+      %h6.input-panel= @categoria_de_la_covariable.covariable.nombre
+
+  %br
+  %br
+
+  .row
+    .small-12.medium-6.large-4.columns
+      = f.button :submit, "Guardar"

@@ -1,0 +1,25 @@
+.row
+  .small-12.columns
+    = render partial: 'shared/errores_crud', locals: { registro: @unidad_de_analisis }
+
+= simple_form_for @unidad_de_analisis do |f|
+
+  .row
+    .small-12.columns
+      = f.input :nombre
+
+  .row
+    .small-12.columns
+      = f.input :descripcion
+
+  .row
+    .small-12.columns
+      %label Pertenece al conjunto de unidades de análisis
+      %h6.input-panel= @unidad_de_analisis.conjunto_de_unidades_de_analisis.nombre
+
+  %br
+  %br
+
+  .row
+    .small-12.medium-6.large-4.columns
+      = f.button :submit, "Guardar"

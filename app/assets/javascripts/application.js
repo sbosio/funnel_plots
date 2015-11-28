@@ -22,6 +22,7 @@
 //= require jquery.chained
 //= require select2
 //= require select2_locale_es
+//= require jquery_nested_form
 //= require_tree .
 
 $(document).confirmWithReveal({
@@ -59,8 +60,8 @@ $(document).ready(function(){
     adaptiveHeight: true,
     fade: false,
     infinite: false,
-    prevArrow: '<button type="button" class="small round">Anterior</button>',
-    nextArrow: '<button type="button" class="small round">Siguiente</button>'
+    prevArrow: '<button type="button" class="tiny round">Anterior</button>',
+    nextArrow: '<button type="button" class="tiny round">Siguiente</button>'
   });
 
   $('.tabla_de_datos').DataTable({

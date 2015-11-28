@@ -9,13 +9,17 @@
         - if usuario_actual.has_role?("rol", on: Modelo)
           %li
             = link_to 'Acción', ruta
-  - if usuario_actual.has_role?("administrar", on: Usuario)
-    %li.has-dropdown{ class: nav_bar_activo?("administracion")}
-      = link_to 'Administración', '#'
-      %ul.dropdown
-        - if usuario_actual.has_role?("administrar", on: Usuario) || usuario_actual.has_role?("ver", on: Usuario)
-          %li
-            = link_to 'Usuarios', usuarios_path
-        - if usuario_actual.has_role?("administrar", on: RolAsignable) || usuario_actual.has_role?("ver", on: RolAsignable)
-          %li
-            = link_to 'Roles asignables', roles_asignables_path
+  %li.has-dropdown{ class: nav_bar_activo?("conjuntos_de_unidades_de_analisis")}
+    = link_to 'Unidades', "#"
+    %ul.dropdown
+      %li
+        = link_to 'Listado de conjuntos', conjuntos_de_unidades_de_analisis_path
+      %li
+        = link_to 'Nuevo conjunto', new_conjunto_de_unidades_de_analisis_path
+  %li.has-dropdown{ class: nav_bar_activo?("covariables")}
+    = link_to 'Covariables', "#"
+    %ul.dropdown
+      %li
+        = link_to 'Listado de covariables', covariables_path
+      %li
+        = link_to 'Nueva covariable', new_covariable_path

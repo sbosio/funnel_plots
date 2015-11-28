@@ -1,23 +1,42 @@
-.row
-  .small-12.medium-6.large-4.columns
-    %h3
+= content_for :titulo_en_panel do
+  .hide-for-small-only
+    %h4
       = titulo
       %small
         = accion
-  .small-12.medium-6.large-8.columns
-    - if defined?(botones)
-      %ul.button-group.round.right
-        - botones.each do |b|
-          - if not b[:if].nil?
-            - if b[:if]
-              %li
-                = link_to b[:texto], b[:ruta], method: (b[:metodo].present? ? b[:metodo].to_sym : :get), class: "boton_de_accion"
-          - elsif not b[:unless].nil?
-            - unless b[:unless]
-              %li
-                = link_to b[:texto], b[:ruta], method: (b[:metodo].present? ? b[:metodo].to_sym : :get), class: "boton_de_accion"
-          - else
-            %li
-              = link_to b[:texto], b[:ruta], method: (b[:metodo].present? ? b[:metodo].to_sym : :get), class: "boton_de_accion"
 
-      
+= content_for :titulo_en_cuerpo do
+  .row.show-for-small-only
+    .small-12.columns
+      %h4
+        = titulo
+        %small
+          = accion
+
+= content_for :botonera do
+  - if defined?(botones)
+    %ul.button-group.round.left
+      - botones.each do |b|
+        - if not b[:if].nil?
+          - if b[:if]
+            %li
+              = link_to b[:texto], b[:ruta], method: (b[:metodo].present? ? b[:metodo].to_sym : :get), |
+                  class: "boton_de_accion"
+        - elsif not b[:unless].nil?
+          - unless b[:unless]
+            %li
+              = link_to b[:texto], b[:ruta], method: (b[:metodo].present? ? b[:metodo].to_sym : :get), |
+                  class: "boton_de_accion"
+        - else
+          %li
+            = link_to b[:texto], b[:ruta], method: (b[:metodo].present? ? b[:metodo].to_sym : :get), |
+                class: "boton_de_accion"
+
+.row.show-for-medium-up
+  .medium-8.large-9.columns
+    = yield :titulo_en_panel
+  .medium-4.large-3.columns.end
+    = yield :botonera
+.row.show-for-small.only
+  .small-12.columns
+    = yield :botonera

@@ -1,0 +1,17 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Categorías de la covariable", accion: "Ver", botones: [{texto: "Covariable", ruta: covariable_path(@categoria_de_la_covariable.covariable)}, {texto: "Modificar", ruta: edit_categoria_de_la_covariable_path(@categoria_de_la_covariable)}]}
+
+.row
+  .small-12.columns
+    %h5= @categoria_de_la_covariable.nombre
+.row
+  .small-12.columns
+    %label Descripción
+    %h6.input-panel
+      - @categoria_de_la_covariable.descripcion.split("\n").each do |linea|
+        = linea
+        %br
+.row
+  .small-12.columns
+    %label Pertenece a la covariable
+    %h6.input-panel= @categoria_de_la_covariable.covariable.nombre

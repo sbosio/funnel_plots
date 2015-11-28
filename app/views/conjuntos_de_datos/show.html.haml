@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Nombre:
+  = @conjunto_de_datos.nombre
+%p
+  %b Descripcion:
+  = @conjunto_de_datos.descripcion
+%p
+  %b Created user:
+  = @conjunto_de_datos.created_user
+%p
+  %b Updated user:
+  = @conjunto_de_datos.updated_user
+
+= link_to 'Edit', edit_conjunto_de_datos_path(@conjunto_de_datos)
+\|
+= link_to 'Back', conjuntos_de_datos_path

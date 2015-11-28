@@ -11,10 +11,59 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701201118) do
+ActiveRecord::Schema.define(version: 20151127221020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categorias_de_la_covariable", force: :cascade do |t|
+    t.string   "nombre",        null: false
+    t.text     "descripcion"
+    t.integer  "covariable_id", null: false
+    t.integer  "created_user",  null: false
+    t.integer  "updated_user",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "categorias_de_la_covariable", ["covariable_id", "nombre"], name: "index_unique_cdlc_on_covariable_id_and_nombre", unique: true, using: :btree
+  add_index "categorias_de_la_covariable", ["covariable_id"], name: "index_categorias_de_la_covariable_on_covariable_id", using: :btree
+  add_index "categorias_de_la_covariable", ["covariable_id"], name: "index_cdlc_on_covariable_id", using: :btree
+
+  create_table "conjuntos_de_datos", force: :cascade do |t|
+    t.string   "nombre",                              null: false
+    t.text     "descripcion"
+    t.integer  "conjunto_de_unidades_de_analisis_id", null: false
+    t.integer  "covariable_id"
+    t.integer  "created_user",                        null: false
+    t.integer  "updated_user",                        null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "conjuntos_de_datos", ["conjunto_de_unidades_de_analisis_id"], name: "index_cdd_on_conjunto_de_unidades_de_analisis_id", using: :btree
+  add_index "conjuntos_de_datos", ["covariable_id"], name: "index_conjuntos_de_datos_on_covariable_id", using: :btree
+
+  create_table "conjuntos_de_unidades_de_analisis", force: :cascade do |t|
+    t.string   "nombre",                          null: false
+    t.text     "descripcion"
+    t.integer  "tipo_de_unidades_de_analisis_id"
+    t.integer  "created_user",                    null: false
+    t.integer  "updated_user",                    null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "conjuntos_de_unidades_de_analisis", ["tipo_de_unidades_de_analisis_id"], name: "index_cua_on_tipo_de_unidades_de_analisis_id", using: :btree
+
+  create_table "covariables", force: :cascade do |t|
+    t.string   "nombre",       null: false
+    t.text     "descripcion"
+    t.integer  "created_user", null: false
+    t.integer  "updated_user", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "permisos", force: :cascade do |t|
     t.string "codigo"
@@ -23,23 +72,29 @@ ActiveRecord::Schema.define(version: 20150701201118) do
 
   create_table "permisos_de_usuario", force: :cascade do |t|
     t.string   "name",                              null: false
-    t.string   "authorizable_type"
+    t.string   "authorizable_type",                 null: false
     t.integer  "authorizable_id"
     t.boolean  "system",            default: false, null: false
+    t.integer  "created_user",                      null: false
+    t.integer  "updated_user",                      null: false
     t.datetime "created_at",                        null: false
     t.datetime "updated_at",                        null: false
   end
 
-  add_index "permisos_de_usuario", ["authorizable_type", "authorizable_id"], name: "idx_aa_tt_aa_id_on_pp_dd_uu", using: :btree
+  add_index "permisos_de_usuario", ["authorizable_type", "authorizable_id"], name: "index_pdu_on_authorizable", using: :btree
   add_index "permisos_de_usuario", ["name"], name: "index_permisos_de_usuario_on_name", using: :btree
 
-  create_table "permisos_de_usuario_usuarios", id: false, force: :cascade do |t|
-    t.integer "usuario_id",            null: false
-    t.integer "permiso_de_usuario_id", null: false
+  create_table "permisos_otorgados", force: :cascade do |t|
+    t.integer  "usuario_id"
+    t.integer  "permiso_de_usuario_id"
+    t.integer  "created_user",          null: false
+    t.integer  "updated_user",          null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
-  add_index "permisos_de_usuario_usuarios", ["permiso_de_usuario_id"], name: "index_permisos_de_usuario_usuarios_on_permiso_de_usuario_id", using: :btree
-  add_index "permisos_de_usuario_usuarios", ["usuario_id"], name: "index_permisos_de_usuario_usuarios_on_usuario_id", using: :btree
+  add_index "permisos_otorgados", ["permiso_de_usuario_id"], name: "index_permisos_otorgados_on_permiso_de_usuario_id", using: :btree
+  add_index "permisos_otorgados", ["usuario_id"], name: "index_permisos_otorgados_on_usuario_id", using: :btree
 
   create_table "roles_asignables", force: :cascade do |t|
     t.string   "codigo"
@@ -53,6 +108,30 @@ ActiveRecord::Schema.define(version: 20150701201118) do
     t.string "nombre"
     t.string "codigo"
   end
+
+  create_table "tipos_de_evaluacion", force: :cascade do |t|
+    t.string  "nombre"
+    t.string  "descripcion"
+    t.boolean "implementado", default: false
+  end
+
+  create_table "tipos_de_unidades_de_analisis", force: :cascade do |t|
+    t.string "nombre"
+    t.text   "descripcion"
+  end
+
+  create_table "unidades_de_analisis", force: :cascade do |t|
+    t.string   "nombre",                              null: false
+    t.string   "descripcion"
+    t.integer  "conjunto_de_unidades_de_analisis_id"
+    t.integer  "created_user",                        null: false
+    t.integer  "updated_user",                        null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "unidades_de_analisis", ["conjunto_de_unidades_de_analisis_id", "nombre"], name: "index_unique_uda_on_cduda_id_and_nombre", unique: true, using: :btree
+  add_index "unidades_de_analisis", ["conjunto_de_unidades_de_analisis_id"], name: "index_uda_on_conjunto_de_unidades_de_analisis_id", using: :btree
 
   create_table "usuarios", force: :cascade do |t|
     t.string   "nombre",                 default: "",    null: false
@@ -85,5 +164,26 @@ ActiveRecord::Schema.define(version: 20150701201118) do
   add_index "usuarios", ["reset_password_token"], name: "index_usuarios_on_reset_password_token", unique: true, using: :btree
   add_index "usuarios", ["unlock_token"], name: "index_usuarios_on_unlock_token", unique: true, using: :btree
 
+  add_foreign_key "categorias_de_la_covariable", "covariables"
+  add_foreign_key "categorias_de_la_covariable", "usuarios", column: "created_user"
+  add_foreign_key "categorias_de_la_covariable", "usuarios", column: "updated_user"
+  add_foreign_key "conjuntos_de_datos", "conjuntos_de_unidades_de_analisis"
+  add_foreign_key "conjuntos_de_datos", "covariables"
+  add_foreign_key "conjuntos_de_datos", "usuarios", column: "created_user"
+  add_foreign_key "conjuntos_de_datos", "usuarios", column: "updated_user"
+  add_foreign_key "conjuntos_de_unidades_de_analisis", "tipos_de_unidades_de_analisis"
+  add_foreign_key "conjuntos_de_unidades_de_analisis", "usuarios", column: "created_user"
+  add_foreign_key "conjuntos_de_unidades_de_analisis", "usuarios", column: "updated_user"
+  add_foreign_key "covariables", "usuarios", column: "created_user"
+  add_foreign_key "covariables", "usuarios", column: "updated_user"
+  add_foreign_key "permisos_de_usuario", "usuarios", column: "created_user"
+  add_foreign_key "permisos_de_usuario", "usuarios", column: "updated_user"
+  add_foreign_key "permisos_otorgados", "permisos_de_usuario"
+  add_foreign_key "permisos_otorgados", "usuarios"
+  add_foreign_key "permisos_otorgados", "usuarios", column: "created_user"
+  add_foreign_key "permisos_otorgados", "usuarios", column: "updated_user"
+  add_foreign_key "unidades_de_analisis", "conjuntos_de_unidades_de_analisis"
+  add_foreign_key "unidades_de_analisis", "usuarios", column: "created_user"
+  add_foreign_key "unidades_de_analisis", "usuarios", column: "updated_user"
   add_foreign_key "usuarios", "sexos"
 end

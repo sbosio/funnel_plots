@@ -1,7 +1,12 @@
 .row
-  .small-12.medium-6.small-centered.columns
-    %h1 Bienvenido
-.row
-  .small-12.medium-6.small-centered.columns
-    %p Utilice el menú superior para comenzar a trabajar
+  .small-12.columns
+    %h3.text-center
+      - if usuario_actual.sexo.codigo == "F"
+        Bienvenida
+      - else
+        Bienvenido
+      = usuario_actual.nombre
 
+.row
+  .small-12.small-centered.columns
+    %p.text-center Utiliza el menú superior para comenzar a trabajar

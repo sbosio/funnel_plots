@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20151127221020) do
 
   create_table "tipos_de_evaluacion", force: :cascade do |t|
     t.string  "nombre"
-    t.string  "descripcion"
+    t.text    "descripcion"
     t.boolean "implementado", default: false
   end
 
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20151127221020) do
 
   create_table "unidades_de_analisis", force: :cascade do |t|
     t.string   "nombre",                              null: false
-    t.string   "descripcion"
+    t.text     "descripcion"
     t.integer  "conjunto_de_unidades_de_analisis_id"
     t.integer  "created_user",                        null: false
     t.integer  "updated_user",                        null: false

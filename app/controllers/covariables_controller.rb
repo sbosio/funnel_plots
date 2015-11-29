@@ -39,6 +39,8 @@ class CovariablesController < ApplicationController
 
   # PATCH/PUT /covariables/1
   def update
+    raise Acl9::AccessDenied unless @covariable.modificable?
+
     if @covariable.update(covariable_parametros)
       redirect_to @covariable,
         notice: 'La covariable se modificó correctamente.'

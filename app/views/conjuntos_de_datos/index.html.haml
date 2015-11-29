@@ -1,27 +1,65 @@
-%h1 Listing conjuntos_de_datos
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Conjuntos de datos", accion: "Listado", |
+    botones: [{texto: "Crear", ruta: new_conjunto_de_datos_path}]}
 
-%table
-  %thead
-    %tr
-      %th Nombre
-      %th Descripcion
-      %th Created user
-      %th Updated user
-      %th
-      %th
-      %th
+.row.show-for-medium-up
+  .medium-12.columns
+    %table{ summary: "Listado de conjuntos de datos. Puedes utilizar la primer columna para ubicar un conjunto por su nombre, luego leyendo a través de esa fila podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%" }
+      %thead
+        %tr
+          %th{scope: "column"} Nombre
+          %th{scope: "column"} Descripción
+          %th{scope: "column"} Conjunto de unidades
+          %th{scope: "column"} Covariable
+          %th{scope: "column", colspan: 4, style: "text-align: center;"} Acciones
+      %tbody
+        - @conjuntos_de_datos.each do |conjunto|
+          %tr
+            %td= conjunto.nombre
+            %td= conjunto.descripcion_corta
+            %td= conjunto.conjunto_de_unidades_de_analisis.nombre
+            - if conjunto.covariable.present?
+              %td= conjunto.covariable.nombre
+            - else
+              %td= "<em>No definido</em>".html_safe
+            %td= link_to '', conjunto, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+            %td= link_to '', edit_conjunto_de_datos_path(conjunto), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar" 
+            %td= link_to '', tabla_de_datos_del_conjunto_path(conjunto), class: "fi-thumbnails boton_de_accion", 'aria-haspopup': "true", title: "Tabla de datos" 
+            %td
+              - if conjunto.modificable?
+                = link_to '', conjunto, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de datos no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+              - else
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
 
-  %tbody
-    - @conjuntos_de_datos.each do |conjunto_de_datos|
-      %tr
-        %td= conjunto_de_datos.nombre
-        %td= conjunto_de_datos.descripcion
-        %td= conjunto_de_datos.created_user
-        %td= conjunto_de_datos.updated_user
-        %td= link_to 'Show', conjunto_de_datos
-        %td= link_to 'Edit', edit_conjunto_de_datos_path(conjunto_de_datos)
-        %td= link_to 'Destroy', conjunto_de_datos, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Conjunto de datos', new_conjunto_de_datos_path
+.row.show-for-small-only
+  %div{class: "carousel"}
+    - @conjuntos_de_datos.each do |conjunto|
+      %div
+        %table{ summary: "Listado de conjuntos de datos. Se presenta un conjunto a la vez. Arrastra para cambiar entre conjuntos. La primer fila es el nombre del conjunto, luego leyendo hacia abajo a través de la columna podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+          %thead
+          %tbody
+            %tr
+              %th{scope: "row", width: "35%"} Nombre
+              %td= conjunto.nombre
+            %tr
+              %th{scope: "row"} Descripción
+              %td= conjunto.descripcion_corta
+            %tr
+              %th{scope: "row"} Conjunto de unidades
+              %td= conjunto.conjunto_de_unidades_de_analisis.nombre
+            %tr
+              %th{scope: "row"} Covariable
+              - if conjunto.covariable.present?
+                %td= conjunto.covariable.nombre
+              - else
+                %td= "<em>No definido</em>".html_safe
+            %tr
+              %th{scope: "row", rowspan: 3} Acciones
+              %td
+                = link_to '', conjunto, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+                = link_to '', edit_conjunto_de_datos_path(conjunto), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                = link_to '', tabla_de_datos_del_conjunto_path(conjunto), class: "fi-thumbnails boton_de_accion", 'aria-haspopup': "true", title: "Tabla de datos" 
+                - if conjunto.modificable?
+                  = link_to '', conjunto, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de datos no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                - else
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"

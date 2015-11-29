@@ -1,6 +1,4 @@
 - if usuario_autenticado?
-  %li{ class: nav_bar_activo?("visitantes")}
-    = link_to 'Inicio', root_path
   -# Ejemplo de opción de menú con verificación de permisos de Acl9
   -# if usuario_actual.has_role?("rol", on: Modelo)
     %li.has-dropdown{ class: nav_bar_activo?("modelos")}
@@ -23,3 +21,17 @@
         = link_to 'Listado de covariables', covariables_path
       %li
         = link_to 'Nueva covariable', new_covariable_path
+  %li.has-dropdown{ class: nav_bar_activo?("conjuntos_de_datos")}
+    = link_to 'Datos', "#"
+    %ul.dropdown
+      %li
+        = link_to 'Listado de conjuntos', conjuntos_de_datos_path
+      %li
+        = link_to 'Nuevo conjunto', new_conjunto_de_datos_path
+  %li.has-dropdown{ class: nav_bar_activo?("graficos")}
+    = link_to 'Gráficos', "#"
+    %ul.dropdown
+      %li
+        = link_to 'Listado de gráficos', "#"
+      %li
+        = link_to 'Nuevo gráfico', "#"

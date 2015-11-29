@@ -1,14 +1,20 @@
 class ConjuntosDeDatosController < ApplicationController
-  before_action :set_conjunto_de_datos, only: [:show, :edit, :update, :destroy]
+  before_action :autenticar_usuario!
+  before_action :establecer_conjunto_de_datos, only: [:show, :edit, :update, :destroy, :tabla_de_datos]
+
+  access_control do
+    # TODO: Revisar los controles de acceso. Por ahora solo verificamos propiedad en las distintas acciones
+    allow all
+  end
 
   # GET /conjuntos_de_datos
-  # GET /conjuntos_de_datos.json
   def index
-    @conjuntos_de_datos = ConjuntoDeDatos.all
+    @conjuntos_de_datos = ConjuntoDeDatos.includes(
+        :conjunto_de_unidades_de_analisis, :covariable
+      ).where(propietario: usuario_actual)
   end
 
   # GET /conjuntos_de_datos/1
-  # GET /conjuntos_de_datos/1.json
   def show
   end
 
@@ -22,53 +28,54 @@ class ConjuntosDeDatosController < ApplicationController
   end
 
   # POST /conjuntos_de_datos
-  # POST /conjuntos_de_datos.json
   def create
-    @conjunto_de_datos = ConjuntoDeDatos.new(conjunto_de_datos_params)
+    @conjunto_de_datos = ConjuntoDeDatos.new
+    @conjunto_de_datos.attributes = conjunto_de_datos_parametros
 
-    respond_to do |format|
-      if @conjunto_de_datos.save
-        format.html { redirect_to @conjunto_de_datos, notice: 'Conjunto de datos was successfully created.' }
-        format.json { render :show, status: :created, location: @conjunto_de_datos }
-      else
-        format.html { render :new }
-        format.json { render json: @conjunto_de_datos.errors, status: :unprocessable_entity }
-      end
+    if @conjunto_de_datos.save
+      redirect_to @conjunto_de_datos, notice: 'El conjunto de datos se creó correctamente.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /conjuntos_de_datos/1
-  # PATCH/PUT /conjuntos_de_datos/1.json
   def update
-    respond_to do |format|
-      if @conjunto_de_datos.update(conjunto_de_datos_params)
-        format.html { redirect_to @conjunto_de_datos, notice: 'Conjunto de datos was successfully updated.' }
-        format.json { render :show, status: :ok, location: @conjunto_de_datos }
-      else
-        format.html { render :edit }
-        format.json { render json: @conjunto_de_datos.errors, status: :unprocessable_entity }
-      end
+    if @conjunto_de_datos.update(conjunto_de_datos_parametros)
+      redirect_to @conjunto_de_datos,
+        notice: 'El conjunto de datos se modificó correctamente.'
+    else
+      render :edit
     end
   end
 
   # DELETE /conjuntos_de_datos/1
-  # DELETE /conjuntos_de_datos/1.json
   def destroy
+    raise Acl9::AccessDenied unless @conjunto_de_datos.modificable?
+
     @conjunto_de_datos.destroy
-    respond_to do |format|
-      format.html { redirect_to conjuntos_de_datos_url, notice: 'Conjunto de datos was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to conjuntos_de_datos_url,
+      notice: 'Se eliminó correctamente el conjunto de unidades de análisis.'
+  end
+
+  def tabla_de_datos
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_conjunto_de_datos
+    def establecer_conjunto_de_datos
       @conjunto_de_datos = ConjuntoDeDatos.find(params[:id])
+      raise Acl9::AccessDenied if @conjunto_de_datos.propietario != usuario_actual
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def conjunto_de_datos_params
-      params.require(:conjunto_de_datos).permit(:nombre, :descripcion, :created_user, :updated_user)
+    def conjunto_de_datos_parametros
+      if @conjunto_de_datos.modificable?
+        params.require(:conjunto_de_datos).permit(
+            :nombre, :descripcion, :conjunto_de_unidades_de_analisis_id, :covariable_id
+          )
+      else
+        params.require(:conjunto_de_datos).permit(:nombre, :descripcion)
+#        params.require(:conjunto_de_datos).permit(
+#          :nombre, :descripcion, datos_attributes: [:id, :nombre, :descripcion])
+      end
     end
 end

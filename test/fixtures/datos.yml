@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  conjunto_de_datos_id: 
+  unidad_de_analisis_id: 
+  covariable_id: 
+  valor: 
+  created_user: 1
+  updated_user: 1
+
+two:
+  conjunto_de_datos_id: 
+  unidad_de_analisis_id: 
+  covariable_id: 
+  valor: 
+  created_user: 1
+  updated_user: 1

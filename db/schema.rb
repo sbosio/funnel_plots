@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151127221020) do
+ActiveRecord::Schema.define(version: 20151128210338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,22 @@ ActiveRecord::Schema.define(version: 20151127221020) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
+
+  create_table "datos", force: :cascade do |t|
+    t.integer  "conjunto_de_datos_id",                        null: false
+    t.integer  "unidad_de_analisis_id",                       null: false
+    t.integer  "categoria_de_la_covariable_id"
+    t.decimal  "valor",                         precision: 6, null: false
+    t.integer  "created_user",                                null: false
+    t.integer  "updated_user",                                null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+  end
+
+  add_index "datos", ["categoria_de_la_covariable_id"], name: "index_datos_on_categoria_de_la_covariable_id", using: :btree
+  add_index "datos", ["conjunto_de_datos_id", "unidad_de_analisis_id", "categoria_de_la_covariable_id"], name: "index_datos_unique_on_terna_de_unicidad", unique: true, using: :btree
+  add_index "datos", ["conjunto_de_datos_id"], name: "index_datos_on_conjunto_de_datos_id", using: :btree
+  add_index "datos", ["unidad_de_analisis_id"], name: "index_datos_on_unidad_de_analisis_id", using: :btree
 
   create_table "permisos", force: :cascade do |t|
     t.string "codigo"
@@ -176,6 +192,11 @@ ActiveRecord::Schema.define(version: 20151127221020) do
   add_foreign_key "conjuntos_de_unidades_de_analisis", "usuarios", column: "updated_user"
   add_foreign_key "covariables", "usuarios", column: "created_user"
   add_foreign_key "covariables", "usuarios", column: "updated_user"
+  add_foreign_key "datos", "categorias_de_la_covariable"
+  add_foreign_key "datos", "conjuntos_de_datos"
+  add_foreign_key "datos", "unidades_de_analisis"
+  add_foreign_key "datos", "usuarios", column: "created_user"
+  add_foreign_key "datos", "usuarios", column: "updated_user"
   add_foreign_key "permisos_de_usuario", "usuarios", column: "created_user"
   add_foreign_key "permisos_de_usuario", "usuarios", column: "updated_user"
   add_foreign_key "permisos_otorgados", "permisos_de_usuario"

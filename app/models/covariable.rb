@@ -7,11 +7,12 @@ class Covariable < ActiveRecord::Base
   # Asociaciones
   belongs_to  :propietario, foreign_key: :created_user, class_name: "Usuario"
   has_many    :categorias_de_la_covariable, inverse_of: :covariable
+  has_many    :conjuntos_de_datos, inverse_of: :covariable
 
   # Validaciones
   validates             :nombre, presence: true
   validates             :nombre, uniqueness: { case_sensitive: false }
-  #validates_associated  :categorias_de_la_covariable, message: ""
+  validates_associated  :categorias_de_la_covariable, message: ""
   validate              :requiere_al_menos_dos_categorias
 
   # Modelo anidado: CategoriaDeLaCovariable
@@ -26,12 +27,11 @@ class Covariable < ActiveRecord::Base
     descripcion[0..117] + "..."
   end
 
-  # Métodos para indicar si este objeto puede modificarse
+  # Método para indicar si este objeto puede modificarse
   # En el caso de los conjuntos de unidades de análisis, el nombre y descripción siempre se puede
-  # modificar, pero no el resto de los campos si ya fue utilizado en algún gráfico
+  # modificar, pero no el resto de los campos si ya fue utilizado en algún conjunto de datos
   def modificable?
-    # TODO: modificar el método cuando agregue el modelo de Grafico
-    new_record? || false
+    new_record? || conjuntos_de_datos.size == 0
   end
 
 end

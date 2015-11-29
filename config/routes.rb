@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :covariables
   resources :categorias_de_la_covariable, only: [:show, :edit, :update, :destroy]
   resources :conjuntos_de_datos
+  get "conjuntos_de_datos/:id/tabla_de_datos", to: "conjuntos_de_datos#tabla_de_datos", as: :tabla_de_datos_del_conjunto
 
   devise_for :usuarios, controllers: { sessions: "sesiones", registrations: "usuarios", passwords: "passwords" }
   devise_scope :usuario do

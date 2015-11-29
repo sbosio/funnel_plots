@@ -1,0 +1,6 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Conjuntos de datos", accion: "Tabla de datos", botones: [{texto: "Conjunto", ruta: conjunto_de_datos_path(@conjunto_de_datos)}]}
+
+.row
+  .small-12.columns
+    %h5= @conjunto_de_datos.nombre

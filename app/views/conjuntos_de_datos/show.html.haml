@@ -1,18 +1,25 @@
-%p#notice= notice
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Conjuntos de datos", accion: "Ver", botones: [{texto: "Listado", ruta: conjuntos_de_datos_path}, {texto: "Modificar", ruta: edit_conjunto_de_datos_path(@conjunto_de_datos)}, {texto: "Tabla", ruta: tabla_de_datos_del_conjunto_path(@conjunto_de_datos)}]}
 
-%p
-  %b Nombre:
-  = @conjunto_de_datos.nombre
-%p
-  %b Descripcion:
-  = @conjunto_de_datos.descripcion
-%p
-  %b Created user:
-  = @conjunto_de_datos.created_user
-%p
-  %b Updated user:
-  = @conjunto_de_datos.updated_user
+.row
+  .small-12.columns
+    %h5= @conjunto_de_datos.nombre
+.row
+  .small-12.columns
+    %label Descripción
+    %h6.input-panel
+      - @conjunto_de_datos.descripcion.split("\n").each do |linea|
+        = linea
+        %br
+.row
+  .small-12.columns
+    %label Conjunto de unidades de análisis
+    %h6.input-panel= @conjunto_de_datos.conjunto_de_unidades_de_analisis.nombre
 
-= link_to 'Edit', edit_conjunto_de_datos_path(@conjunto_de_datos)
-\|
-= link_to 'Back', conjuntos_de_datos_path
+.row
+  .small-12.columns
+    %label Covariable
+    - if @conjunto_de_datos.covariable.present?
+      %h6.input-panel= @conjunto_de_datos.covariable.nombre
+    - else
+      %h6.input-panel= "<em>No se seleccionó ninguna covariable</em>".html_safe

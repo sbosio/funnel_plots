@@ -1,7 +1,4 @@
-%h1 Editing conjunto_de_datos
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Conjuntos de datos", accion: "Modificar", botones: [{texto: "Listado", ruta: conjuntos_de_datos_path}]}
 
 = render 'form'
-
-= link_to 'Show', @conjunto_de_datos
-\|
-= link_to 'Back', conjuntos_de_datos_path

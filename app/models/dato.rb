@@ -9,7 +9,7 @@ class Dato < ActiveRecord::Base
 
   # Validaciones
   validates :conjunto_de_datos, :unidad_de_analisis, :valor, presence: true
-  validates :valor, numericality: true
+  validates :valor, numericality: true, if: "valor.present?"
   validates :categoria_de_la_covariable, presence: true,
               if: "conjunto_de_datos.present? && conjunto_de_datos.covariable.present?"
 

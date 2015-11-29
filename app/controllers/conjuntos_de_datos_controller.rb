@@ -45,7 +45,11 @@ class ConjuntosDeDatosController < ApplicationController
       redirect_to @conjunto_de_datos,
         notice: 'El conjunto de datos se modificó correctamente.'
     else
-      render :edit
+      if conjunto_de_datos_parametros.has_key?("datos_attributes")
+        render :tabla_de_datos
+      else
+        render :edit
+      end
     end
   end
 
@@ -59,23 +63,49 @@ class ConjuntosDeDatosController < ApplicationController
   end
 
   def tabla_de_datos
+
+    if @conjunto_de_datos.datos.size == 0
+      # No hay tabla de datos almacenada, construirla
+      if @categorias.size > 0
+        @unidades.each do |unidad|
+          @categorias.each do |categoria|
+            @conjunto_de_datos.datos.build(unidad_de_analisis_id: unidad.id, categoria_de_la_covariable_id: categoria.id)
+          end
+        end
+      else
+        @unidades.each do |unidad|
+          @conjunto_de_datos.datos.build(unidad_de_analisis_id: unidad.id, categoria_de_la_covariable_id: nil)
+        end
+      end
+    elsif @conjunto_de_datos.datos.size != (@unidades.size * (@categorias.size == 0 ? 1 : @categorias.size))
+      # WTF???, la tabla de datos se debe haber corrompido
+      raise Acl9::AccessDenied # TODO: cambiar esto por un método más inteligente
+    end
   end
 
   private
     def establecer_conjunto_de_datos
       @conjunto_de_datos = ConjuntoDeDatos.find(params[:id])
       raise Acl9::AccessDenied if @conjunto_de_datos.propietario != usuario_actual
+
+      @unidades = UnidadDeAnalisis.where(
+          conjunto_de_unidades_de_analisis: @conjunto_de_datos.conjunto_de_unidades_de_analisis
+        ).order(:id)
+      @categorias = CategoriaDeLaCovariable.where(
+          covariable: @conjunto_de_datos.covariable
+        ).order(:id)
     end
 
     def conjunto_de_datos_parametros
       if @conjunto_de_datos.modificable?
         params.require(:conjunto_de_datos).permit(
-            :nombre, :descripcion, :conjunto_de_unidades_de_analisis_id, :covariable_id
+            :nombre, :descripcion, :conjunto_de_unidades_de_analisis_id, :covariable_id,
+            datos_attributes: [:id, :unidad_de_analisis_id, :categoria_de_la_covariable_id, :valor]
           )
       else
-        params.require(:conjunto_de_datos).permit(:nombre, :descripcion)
-#        params.require(:conjunto_de_datos).permit(
-#          :nombre, :descripcion, datos_attributes: [:id, :nombre, :descripcion])
+        params.require(:conjunto_de_datos).permit(:nombre, :descripcion,
+            datos_attributes: [:id, :unidad_de_analisis_id, :categoria_de_la_covariable_id, :valor]
+          )
       end
     end
 end

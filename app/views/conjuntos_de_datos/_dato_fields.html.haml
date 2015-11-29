@@ -1,0 +1,26 @@
+- if @categorias.size == 0
+  %tr
+    %th{scope: row}= @conjunto_de_datos.datos[@indice_de_dato].unidad_de_analisis.nombre
+    %td{style: "padding: 0;"}
+      = f.input :unidad_de_analisis_id, as: :hidden
+      = f.input :valor, label: false, as: :string, input_html: {style: "margin: 0; text-align: right;"}
+- else
+  - if @indice_de_dato % @categorias.size == 0
+    - if @indice_de_dato > 0
+      = "</tr>".html_safe
+    = "<tr>".html_safe
+    = "<th scope: \"row\">".html_safe + @conjunto_de_datos.datos[@indice_de_dato].unidad_de_analisis.nombre + "</th>".html_safe
+    = "<td style=\"padding: 0;\">".html_safe
+    = f.input :unidad_de_analisis_id, as: :hidden
+    = f.input :categoria_de_la_covariable_id, as: :hidden
+    = f.input :valor, label: false, as: :string, input_html: {style: "margin: 0; text-align: right;"}
+    = "</td>".html_safe
+  - else
+    = "<td style=\"padding: 0;\">".html_safe
+    = f.input :unidad_de_analisis_id, as: :hidden
+    = f.input :categoria_de_la_covariable_id, as: :hidden
+    = f.input :valor, label: false, as: :string, input_html: {style: "margin: 0; text-align: right;"}
+    = "</td>".html_safe
+  - if @indice_de_dato == (@conjunto_de_datos.datos.size - 1)
+    = "</tr>".html_safe
+- @indice_de_dato = @indice_de_dato + 1

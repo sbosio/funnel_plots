@@ -3,4 +3,33 @@
 
 .row
   .small-12.columns
-    %h5= @conjunto_de_datos.nombre
+    %h5
+      Tabla de datos del conjunto
+      = "\"#{@conjunto_de_datos.nombre}\""
+
+= simple_nested_form_for @conjunto_de_datos do |f|
+
+  .row.show-for-medium-up
+    .medium-12.columns
+      %table{ summary: "Tabla de doble entrada de los datos del conjunto, por unidad de análisis y covariable (si está definida).", role: "grid" }
+        %thead
+          %tr
+            %th{scope: "column", rowspan: 2, style: "text-align: center;"} Unidades de análisis
+            - if @categorias.size == 0
+              %th{scope: "column", style: "text-align: center;"} Categorías de la covariable
+            - else
+              %th{scope: "column", colspan: @categorias.size, style: "text-align: center;"} Categorías de la covariable
+          %tr
+            - if @categorias.size == 0
+              %th{style: "text-align: center;"}= "<em>Sin definir</em>".html_safe
+            - else
+              - @categorias.each do |categoria|
+                %th{style: "text-align: center;"}= categoria.nombre
+        %tbody
+          - @indice_de_dato = 0
+          = f.fields_for :datos
+  %br
+  %br
+  .row
+    .small-12.columns
+      = f.button :submit, "Guardar"

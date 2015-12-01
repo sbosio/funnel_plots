@@ -2,12 +2,24 @@ Rails.application.routes.draw do
 
   root to: 'visitantes#index'
 
+  # Unidades de análisis
   resources :conjuntos_de_unidades_de_analisis
   resources :unidades_de_analisis, only: [:show, :edit, :update, :destroy]
+
+  # Covariables
   resources :covariables
   resources :categorias_de_la_covariable, only: [:show, :edit, :update, :destroy]
+
+  # Datos
   resources :conjuntos_de_datos
   get "conjuntos_de_datos/:id/tabla_de_datos", to: "conjuntos_de_datos#tabla_de_datos", as: :tabla_de_datos_del_conjunto
+
+  # Gráficos
+  get "graficos_tb/form", to: "graficos_tb#form"
+  get "graficos_tad/form", to: "graficos_tad#form"
+  resources :graficos
+  resources :graficos_tb
+  resources :graficos_tad
 
   devise_for :usuarios, controllers: { sessions: "sesiones", registrations: "usuarios", passwords: "passwords" }
   devise_scope :usuario do

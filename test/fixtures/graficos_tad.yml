@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fuente_eventos_observados: 1
+  fuente_poblacion: 1
+  multiplicador: 1
+
+two:
+  fuente_eventos_observados: 1
+  fuente_poblacion: 1
+  multiplicador: 1

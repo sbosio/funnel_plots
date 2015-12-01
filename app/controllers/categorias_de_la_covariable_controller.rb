@@ -25,6 +25,8 @@ class CategoriasDeLaCovariableController < ApplicationController
 
   # DELETE /categorias_de_la_covariable/1
   def destroy
+    raise Acl9::AccessDenied unless @categoria_de_la_covariable.covariable.modificable?
+
     @categoria_de_la_covariable.destroy
     redirect_to @categoria_de_la_covariable.covariable,
       notice: 'La categoría de la covariable se eliminó correctamente.'

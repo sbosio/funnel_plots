@@ -1,0 +1,24 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Graficos", accion: "Ver", botones: [{texto: "Listado", ruta: graficos_path}, {texto: "Modificar", ruta: edit_grafico_path(@grafico)}] }
+
+.row
+  .small-12.columns
+    %h5= @grafico.nombre
+.row
+  .small-12.columns
+    %label Descripción
+    %h6.input-panel
+      - @grafico.descripcion.split("\n").each do |linea|
+        = linea
+        %br
+.row
+  .small-12.columns
+    %label Tipo de evaluación
+    %h6.input-panel= @grafico.tipo_de_evaluacion.nombre
+
+%br
+%br
+
+- @lazy_high_chart.html_options.merge!(class: "row small-12 small-centered columns")
+
+= high_chart("placeholder", @lazy_high_chart)

@@ -1,0 +1,14 @@
+= simple_form_for @grafico_tb do |f|
+  /start
+  .row
+    .small-12.columns
+      = f.association :eventos_observados, collection: @fuentes_eventos_observados
+
+  .row
+    .small-12.columns
+      = f.association :poblacion, collection: @fuentes_poblacion
+
+  .row
+    .small-12.columns
+      = f.input :multiplicador, as: :string
+  /end

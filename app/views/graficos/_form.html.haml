@@ -1,0 +1,56 @@
+.row
+  .small-12.columns
+    = render partial: 'shared/errores_crud', locals: { registro: @grafico }
+
+= simple_form_for(@grafico) do |f|
+  .row
+    .small-12.columns
+      = f.input :nombre
+  .row
+    .small-12.columns
+      = f.input :descripcion
+  .row
+    .small-12.medium-6.columns
+      - if @grafico.modificable?
+        = f.association :tipo_de_evaluacion, collection: @tipos_de_evaluacion, include_blank: true
+      - else
+        = f.association :tipo_de_evaluacion, collection: @tipos_de_evaluacion, input_html: {disabled: 'disabled'}
+
+  .row
+    .small-12.columns
+      %h5.subheader Parametrización del gráfico
+      - if @grafico.implementacion.nil?
+        #leyenda_seleccion
+          %h5.subheader= "<small>(debe seleccionar un tipo de evaluación para establecer los parámetros)</small>".html_safe
+
+  #implementacion{ 'data-grafico': @grafico.to_json(root: true, except: [:created_user, :updated_user, :created_at, :updated_at], include: [:implementacion]), 'data-validar': @validar_implementacion.to_s }
+
+  #ocultas.row
+    .small-12.columns
+      %h5.subheader
+        Opciones del gráfico
+        %i{class: "boton_de_accion fi-plus", 'data-show': "#visibles", 'data-hide': "#ocultas", title: "Mostrar opciones"}
+
+  #visibles{style: "display: none;"}
+    .row
+      .small-12.columns
+        %h5.subheader
+          Opciones del gráfico
+          %i{class: "boton_de_accion fi-minus", 'data-show': "#ocultas", 'data-hide': "#visibles", title: "Ocultar opciones"}
+    .row
+      .small-12.medium-6.columns
+        = f.input :titulo
+      .small-12.medium-6.columns.end
+        = f.input :subtitulo
+    .row
+      .small-12.medium-6.columns
+        = f.input :etiqueta_eje_x
+      .small-12.medium-6.columns.end
+        = f.input :etiqueta_eje_y
+
+  %br
+  %br
+
+  .row
+    .small-12.medium-6.large-4.columns
+      = f.button :submit, "Guardar"

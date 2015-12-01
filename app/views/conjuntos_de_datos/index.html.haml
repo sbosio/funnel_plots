@@ -26,7 +26,7 @@
             %td= link_to '', edit_conjunto_de_datos_path(conjunto), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar" 
             %td= link_to '', tabla_de_datos_del_conjunto_path(conjunto), class: "fi-thumbnails boton_de_accion", 'aria-haspopup': "true", title: "Tabla de datos" 
             %td
-              - if conjunto.modificable?
+              - if conjunto.eliminable?
                 = link_to '', conjunto, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de datos no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
               - else
                 = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
@@ -54,12 +54,12 @@
               - else
                 %td= "<em>No definido</em>".html_safe
             %tr
-              %th{scope: "row", rowspan: 3} Acciones
+              %th{scope: "row"} Acciones
               %td
                 = link_to '', conjunto, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
                 = link_to '', edit_conjunto_de_datos_path(conjunto), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
                 = link_to '', tabla_de_datos_del_conjunto_path(conjunto), class: "fi-thumbnails boton_de_accion", 'aria-haspopup': "true", title: "Tabla de datos" 
-                - if conjunto.modificable?
+                - if conjunto.eliminable?
                   = link_to '', conjunto, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de datos no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
                 - else
                   = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"

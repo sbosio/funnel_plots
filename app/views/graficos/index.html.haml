@@ -1,0 +1,52 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Gráficos", accion: "Listado", |
+    botones: [{texto: "Crear", ruta: new_grafico_path}]}
+
+.row.show-for-medium-up
+  .medium-12.columns
+    %table{ summary: "Listado de gráficos. Puedes utilizar la primer columna para ubicar un gráfico por su nombre, luego leyendo a través de esa fila podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%" }
+      %thead
+        %tr
+          %th{scope: "column"} Nombre
+          %th{scope: "column"} Descripción
+          %th{scope: "column"} Tipo de evaluación
+          %th{scope: "column", colspan: 3, style: "text-align: center;"} Acciones
+      %tbody
+        - @graficos.each do |grafico|
+          %tr
+            %td= grafico.nombre
+            %td= grafico.descripcion_corta
+            %td= grafico.tipo_de_evaluacion.nombre
+            %td= link_to '', grafico, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+            %td= link_to '', edit_grafico_path(grafico), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar" 
+            %td
+              - if grafico.modificable?
+                = link_to '', grafico, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un gráfico no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+              - else
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+
+.row.show-for-small-only
+  %div{class: "carousel"}
+    - @graficos.each do |grafico|
+      %div
+        %table{ summary: "Listado de gráficos. Se presenta un gráfico a la vez. Arrastra para cambiar entre gráficos. La primer fila es el nombre del gráfico, luego leyendo hacia abajo a través de la columna podrás obtener información detallada y enlaces con las acciones que puedes llevar a cabo.", role: "grid", width: "100%"}
+          %thead
+          %tbody
+            %tr
+              %th{scope: "row", width: "35%"} Nombre
+              %td= grafico.nombre
+            %tr
+              %th{scope: "row"} Descripción
+              %td= grafico.descripcion_corta
+            %tr
+              %th{scope: "row"} Tipo de evaluación
+              %td= grafico.tipo_de_evaluacion.nombre
+            %tr
+              %th{scope: "row"} Acciones
+              %td
+                = link_to '', grafico, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
+                = link_to '', edit_grafico_path(grafico), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                - if grafico.modificable?
+                  = link_to '', grafico, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un gráfico no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                - else
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"

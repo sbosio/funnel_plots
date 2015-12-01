@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151128210338) do
+ActiveRecord::Schema.define(version: 20151130221731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,14 +31,15 @@ ActiveRecord::Schema.define(version: 20151128210338) do
   add_index "categorias_de_la_covariable", ["covariable_id"], name: "index_cdlc_on_covariable_id", using: :btree
 
   create_table "conjuntos_de_datos", force: :cascade do |t|
-    t.string   "nombre",                              null: false
+    t.string   "nombre",                                          null: false
     t.text     "descripcion"
-    t.integer  "conjunto_de_unidades_de_analisis_id", null: false
+    t.integer  "conjunto_de_unidades_de_analisis_id",             null: false
     t.integer  "covariable_id"
-    t.integer  "created_user",                        null: false
-    t.integer  "updated_user",                        null: false
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.integer  "created_user",                                    null: false
+    t.integer  "updated_user",                                    null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.integer  "cuenta_de_graficos",                  default: 0, null: false
   end
 
   add_index "conjuntos_de_datos", ["conjunto_de_unidades_de_analisis_id"], name: "index_cdd_on_conjunto_de_unidades_de_analisis_id", using: :btree
@@ -65,6 +66,8 @@ ActiveRecord::Schema.define(version: 20151128210338) do
     t.datetime "updated_at",   null: false
   end
 
+  add_index "covariables", ["created_user"], name: "index_covariables_on_created_user", using: :btree
+
   create_table "datos", force: :cascade do |t|
     t.integer  "conjunto_de_datos_id",                        null: false
     t.integer  "unidad_de_analisis_id",                       null: false
@@ -80,6 +83,50 @@ ActiveRecord::Schema.define(version: 20151128210338) do
   add_index "datos", ["conjunto_de_datos_id", "unidad_de_analisis_id", "categoria_de_la_covariable_id"], name: "index_datos_unique_on_terna_de_unicidad", unique: true, using: :btree
   add_index "datos", ["conjunto_de_datos_id"], name: "index_datos_on_conjunto_de_datos_id", using: :btree
   add_index "datos", ["unidad_de_analisis_id"], name: "index_datos_on_unidad_de_analisis_id", using: :btree
+
+  create_table "graficos", force: :cascade do |t|
+    t.string   "nombre",                null: false
+    t.text     "descripcion"
+    t.integer  "tipo_de_evaluacion_id", null: false
+    t.integer  "implementacion_id",     null: false
+    t.string   "implementacion_type",   null: false
+    t.string   "titulo"
+    t.string   "subtitulo"
+    t.string   "etiqueta_eje_x"
+    t.string   "etiqueta_eje_y"
+    t.integer  "created_user",          null: false
+    t.integer  "updated_user",          null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "graficos", ["created_user"], name: "index_graficos_on_created_user", using: :btree
+  add_index "graficos", ["implementacion_type", "implementacion_id"], name: "index_graficos_on_implementacion_type_and_implementacion_id", using: :btree
+  add_index "graficos", ["tipo_de_evaluacion_id"], name: "index_graficos_on_tipo_de_evaluacion_id", using: :btree
+
+  create_table "graficos_tad", force: :cascade do |t|
+    t.integer  "fuente_eventos_observados", null: false
+    t.integer  "fuente_poblacion",          null: false
+    t.integer  "multiplicador"
+    t.integer  "created_user",              null: false
+    t.integer  "updated_user",              null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "graficos_tad", ["created_user"], name: "index_graficos_tad_on_created_user", using: :btree
+
+  create_table "graficos_tb", force: :cascade do |t|
+    t.integer  "fuente_eventos_observados", null: false
+    t.integer  "fuente_poblacion",          null: false
+    t.integer  "multiplicador"
+    t.integer  "created_user",              null: false
+    t.integer  "updated_user",              null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "graficos_tb", ["created_user"], name: "index_graficos_tb_on_created_user", using: :btree
 
   create_table "permisos", force: :cascade do |t|
     t.string "codigo"
@@ -126,9 +173,11 @@ ActiveRecord::Schema.define(version: 20151128210338) do
   end
 
   create_table "tipos_de_evaluacion", force: :cascade do |t|
-    t.string  "nombre"
-    t.text    "descripcion"
-    t.boolean "implementado", default: false
+    t.string "nombre",                   null: false
+    t.string "codigo",                   null: false
+    t.text   "descripcion"
+    t.string "ruta_de_formulario"
+    t.string "modelo_de_implementacion"
   end
 
   create_table "tipos_de_unidades_de_analisis", force: :cascade do |t|
@@ -197,6 +246,17 @@ ActiveRecord::Schema.define(version: 20151128210338) do
   add_foreign_key "datos", "unidades_de_analisis"
   add_foreign_key "datos", "usuarios", column: "created_user"
   add_foreign_key "datos", "usuarios", column: "updated_user"
+  add_foreign_key "graficos", "tipos_de_evaluacion"
+  add_foreign_key "graficos", "usuarios", column: "created_user"
+  add_foreign_key "graficos", "usuarios", column: "updated_user"
+  add_foreign_key "graficos_tad", "conjuntos_de_datos", column: "fuente_eventos_observados"
+  add_foreign_key "graficos_tad", "conjuntos_de_datos", column: "fuente_poblacion"
+  add_foreign_key "graficos_tad", "usuarios", column: "created_user"
+  add_foreign_key "graficos_tad", "usuarios", column: "updated_user"
+  add_foreign_key "graficos_tb", "conjuntos_de_datos", column: "fuente_eventos_observados"
+  add_foreign_key "graficos_tb", "conjuntos_de_datos", column: "fuente_poblacion"
+  add_foreign_key "graficos_tb", "usuarios", column: "created_user"
+  add_foreign_key "graficos_tb", "usuarios", column: "updated_user"
   add_foreign_key "permisos_de_usuario", "usuarios", column: "created_user"
   add_foreign_key "permisos_de_usuario", "usuarios", column: "updated_user"
   add_foreign_key "permisos_otorgados", "permisos_de_usuario"

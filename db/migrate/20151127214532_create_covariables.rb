@@ -7,7 +7,8 @@ class CreateCovariables < ActiveRecord::Migration
       t.integer     :updated_user,  null: false
       t.timestamps                  null: false
     end
-    add_foreign_key :covariables, :usuarios, column: :created_user
-    add_foreign_key :covariables, :usuarios, column: :updated_user
+    add_index       :covariables,   :created_user
+    add_foreign_key :covariables,   :usuarios, column: :created_user
+    add_foreign_key :covariables,   :usuarios, column: :updated_user
   end
 end

@@ -59,7 +59,7 @@ class ConjuntosDeDatosController < ApplicationController
 
     @conjunto_de_datos.destroy
     redirect_to conjuntos_de_datos_url,
-      notice: 'Se eliminó correctamente el conjunto de unidades de análisis.'
+      notice: 'Se eliminó correctamente el conjunto de datos.'
   end
 
   def tabla_de_datos

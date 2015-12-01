@@ -23,6 +23,9 @@
 //= require select2
 //= require select2_locale_es
 //= require jquery_nested_form
+//= require highcharts/highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/modules/exporting
 //= require_tree .
 
 $(document).confirmWithReveal({
@@ -288,3 +291,33 @@ GLOBAL_DATATABLES_LENGUAGE = {
 };
 
 $(function(){ $(document).foundation(); });
+
+$(document).ready(function(){
+  Highcharts.setOptions({
+      lang: {
+          contextButtonTitle: "Menú contextual",
+          decimalPoint: ",",
+          downloadJPEG: "Descargar JPEG",
+          downloadPDF: "Descargar PDF",
+          downloadPNG: "Descargar PNG",
+          downloadSVG: "Descargar SVG",
+          drillUpText: "Volver a {series.name}",
+          invalidDate: "Fecha no válida",
+          loading: "Cargando...",
+          months: [
+              "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+              "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
+            ],
+          noData: "Sin datos para mostrar",
+          printChart: "Imprimir gráfico",
+          resetZoom: "Restablecer escala",
+          resetZoomTitle: "Restablecer a escala 1:1",
+          shortMonths: [
+              "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul",
+              "Ago", "Set", "Oct", "Nov", "Dic"
+            ],
+          thousandsSep: ".",
+          weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+        }
+    });
+});

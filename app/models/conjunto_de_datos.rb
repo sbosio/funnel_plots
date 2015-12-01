@@ -19,8 +19,8 @@ class ConjuntoDeDatos < ActiveRecord::Base
   accepts_nested_attributes_for :datos, allow_destroy: false
 
   def descripcion_corta
-    return descripcion if descripcion.length < 120
-    descripcion[0..117] + "..."
+    return descripcion if descripcion.length < 130
+    descripcion[0..127] + "..."
   end
 
   # Método para indicar si este objeto puede modificarse
@@ -29,6 +29,13 @@ class ConjuntoDeDatos < ActiveRecord::Base
   # no pueden modificarse una vez que se han cargado los datos.
   def modificable?
     new_record? || datos.size == 0
+  end
+
+  # Método para indicar si este objeto puede eliminarse
+  # En el caso de los conjuntos de datos, pueden eliminarse mientras no se haya asociado a
+  # nińgún gráfico.
+  def eliminable?
+    cuenta_de_graficos == 0
   end
 
 end

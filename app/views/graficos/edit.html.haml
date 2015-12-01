@@ -1,0 +1,4 @@
+= content_for :panel do
+  = render partial: 'shared/panel', locals: { titulo: "Gráficos", accion: "Modificar", botones: [{texto: "Listado", ruta: graficos_path}]}
+
+= render 'form'

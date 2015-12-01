@@ -1,4 +1,5 @@
 class UnidadesDeAnalisisController < ApplicationController
+  before_action :autenticar_usuario!
   before_action :establecer_unidad_de_analisis, only: [:show, :edit, :update, :destroy]
 
   access_control do
@@ -25,6 +26,8 @@ class UnidadesDeAnalisisController < ApplicationController
 
   # DELETE /unidades_de_analisis/1
   def destroy
+    raise Acl9::AccessDenied unless @unidad_de_analisis.conjunto_de_unidades_de_analisis.modificable?
+
     @unidad_de_analisis.destroy
     redirect_to @unidad_de_analisis.conjunto_de_unidades_de_analisis,
       notice: 'La unidad de análisis se eliminó correctamente.'
@@ -33,7 +36,7 @@ class UnidadesDeAnalisisController < ApplicationController
   private
     def establecer_unidad_de_analisis
       @unidad_de_analisis = UnidadDeAnalisis.find(params[:id])
-      rails Acl9::AccessDenied if @unidades_de_analisis.propietario != usuario_actual
+      raise Acl9::AccessDenied if @unidad_de_analisis.propietario != usuario_actual
     end
 
     def unidad_de_analisis_parametros

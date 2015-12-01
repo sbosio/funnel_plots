@@ -88,5 +88,8 @@ ActiveSupport::Inflector.inflections(:es) do |infleccion|
   infleccion.irregular("rol_asignable", "roles_asignables")
   infleccion.irregular("permiso_otorgado", "permisos_otorgados")
   infleccion.irregular("categoria_de_la_covariable", "categorias_de_la_covariable")
+  infleccion.acronym("TB")
+  infleccion.acronym("TAD")
+  infleccion.acronym("TAI")
 
 end

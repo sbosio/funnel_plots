@@ -81,8 +81,8 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.default_url_options = {
-    host: ENV['APP_SERVER_HOSTNAME'],
-    port: ENV['APP_SERVER_PORT']
+    host: ENV['OPENSHIFT_APP_DNS'],
+    port: 80
   }
 
   config.action_mailer.smtp_settings = {

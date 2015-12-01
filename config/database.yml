@@ -15,6 +15,6 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV['DATABASE_URL'] %>
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
+  url: <%= ENV['OPENSHIFT_POSTGRESQL_DB_URL'] %>
+  username: <%= ENV['OPENSHIFT_POSTGRESQL_DB_USERNAME'] %>
+  password: <%= ENV['OPENSHIFT_POSTGRESQL_DB_PASSWORD'] %>

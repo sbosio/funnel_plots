@@ -1,21 +1,22 @@
-default: &default
+defaults: &defaults
   adapter: postgresql
   encoding: unicode
   pool: 5
 
 development:
-  <<: *default
+  <<: *defaults
   username: embudos_adm
   database: embudos_dev
 
 test:
-  <<: *default
+  <<: *defaults
   username: embudos_adm
   database: embudos_test
 
 production:
-  <<: *default
-  host: <%= ENV['OPENSHIFT_POSTGRESQL_DB_HOST'] %>
-  port: <%= ENV['OPENSHIFT_POSTGRESQL_DB_PORT'] %>
-  username: <%= ENV['OPENSHIFT_POSTGRESQL_DB_USERNAME'] %>
-  password: <%= ENV['OPENSHIFT_POSTGRESQL_DB_PASSWORD'] %>
+  <<: *defaults
+  database: <%=ENV['OPENSHIFT_APP_NAME']%>
+  username: <%=ENV['OPENSHIFT_POSTGRESQL_DB_USERNAME']%>
+  password: <%=ENV['OPENSHIFT_POSTGRESQL_DB_PASSWORD']%>
+  host:     <%=ENV['OPENSHIFT_POSTGRESQL_DB_HOST']%>
+  port:     <%=ENV['OPENSHIFT_POSTGRESQL_DB_PORT']%>

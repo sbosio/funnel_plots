@@ -21,9 +21,9 @@
   .row
     .small-12.columns
       - if @covariable.modificable?
-        = f.link_to_add '', :categorias_de_la_covariable, { class: "boton_de_accion fi-plus", 'aria-haspopup': "true", title: "Agregar" }
+        = f.link_to_add '', :categorias_de_la_covariable, { class: "boton_de_accion fi-plus", :'aria-haspopup' => "true", title: "Agregar" }
       - else
-        = link_to '', "#", { class: "boton_de_accion fi-plus disabled", 'aria-haspopup': "true", title: "No se puede agregar"}
+        = link_to '', "#", { class: "boton_de_accion fi-plus disabled", :'aria-haspopup' => "true", title: "No se puede agregar"}
 
   %br
   %br

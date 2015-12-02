@@ -23,20 +23,20 @@
         #leyenda_seleccion
           %h5.subheader= "<small>(debe seleccionar un tipo de evaluación para establecer los parámetros)</small>".html_safe
 
-  #implementacion{ 'data-grafico': @grafico.to_json(root: true, except: [:created_user, :updated_user, :created_at, :updated_at], include: [:implementacion]), 'data-validar': @validar_implementacion.to_s }
+  #implementacion{ :'data-grafico' => @grafico.to_json(root: true, except: [:created_user, :updated_user, :created_at, :updated_at], include: [:implementacion]), :'data-validar' => @validar_implementacion.to_s }
 
   #ocultas.row
     .small-12.columns
       %h5.subheader
         Opciones del gráfico
-        %i{class: "boton_de_accion fi-plus", 'data-show': "#visibles", 'data-hide': "#ocultas", title: "Mostrar opciones"}
+        %i{class: "boton_de_accion fi-plus", :'data-show' => "#visibles", :'data-hide' => "#ocultas", title: "Mostrar opciones"}
 
   #visibles{style: "display: none;"}
     .row
       .small-12.columns
         %h5.subheader
           Opciones del gráfico
-          %i{class: "boton_de_accion fi-minus", 'data-show': "#ocultas", 'data-hide': "#visibles", title: "Ocultar opciones"}
+          %i{class: "boton_de_accion fi-minus", :'data-show' => "#ocultas", :'data-hide' => "#visibles", title: "Ocultar opciones"}
     .row
       .small-12.medium-6.columns
         = f.input :titulo

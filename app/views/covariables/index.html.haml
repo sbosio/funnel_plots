@@ -26,13 +26,13 @@
             - else
               %td
                 = covariable.categorias_de_la_covariable.map{|u| "'" + u.nombre + "'"}.join("; ")
-            %td= link_to '', covariable, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
-            %td= link_to '', edit_covariable_path(covariable), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar" 
+            %td= link_to '', covariable, class: "fi-eye boton_de_accion", :'aria-haspopup' => "true", title: "Ver"
+            %td= link_to '', edit_covariable_path(covariable), class: "fi-pencil boton_de_accion", :'aria-haspopup' => "true", title: "Modificar" 
             %td
               - if covariable.modificable?
-                = link_to '', covariable, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar una covariable no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                = link_to '', covariable, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar una covariable no se puede deshacer" } }, :'aria-haspopup' => "true", title: "Eliminar" 
               - else
-                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", :'aria-haspopup' => "true", title: "No se puede eliminar"
 
 .row.show-for-small-only
   %div{class: "carousel"}
@@ -59,9 +59,9 @@
             %tr
               %th{scope: "row", rowspan: 3} Acciones
               %td
-                = link_to '', covariable, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
-                = link_to '', edit_covariable_path(covariable), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                = link_to '', covariable, class: "fi-eye boton_de_accion", :'aria-haspopup' => "true", title: "Ver"
+                = link_to '', edit_covariable_path(covariable), class: "fi-pencil boton_de_accion", :'aria-haspopup' => "true", title: "Modificar"
                 - if covariable.modificable?
-                  = link_to '', covariable, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar una covariable no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                  = link_to '', covariable, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar una covariable no se puede deshacer" } }, :'aria-haspopup' => "true", title: "Eliminar" 
                 - else
-                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", :'aria-haspopup' => "true", title: "No se puede eliminar"

@@ -26,9 +26,9 @@
   .row
     .small-12.columns
       - if @conjunto_de_unidades_de_analisis.modificable?
-        = f.link_to_add '', :unidades_de_analisis, { class: "boton_de_accion fi-plus", 'aria-haspopup': "true", title: "Agregar" }
+        = f.link_to_add '', :unidades_de_analisis, { class: "boton_de_accion fi-plus", :'aria-haspopup' => "true", title: "Agregar" }
       - else
-        = link_to '', "#", { class: "boton_de_accion fi-plus disabled", 'aria-haspopup': "true", title: "No se puede agregar"}
+        = link_to '', "#", { class: "boton_de_accion fi-plus disabled", :'aria-haspopup' => "true", title: "No se puede agregar"}
 
   %br
   %br

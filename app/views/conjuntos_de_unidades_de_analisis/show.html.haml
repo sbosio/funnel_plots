@@ -35,13 +35,13 @@
           %tr
             %td= unidad.nombre
             %td= unidad.descripcion_corta
-            %td= link_to '', unidad, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
-            %td= link_to '', edit_unidad_de_analisis_path(unidad), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+            %td= link_to '', unidad, class: "fi-eye boton_de_accion", :'aria-haspopup' => "true", title: "Ver"
+            %td= link_to '', edit_unidad_de_analisis_path(unidad), class: "fi-pencil boton_de_accion", :'aria-haspopup' => "true", title: "Modificar"
             %td
               - if conjunto.modificable?
-                = link_to '', unidad, method: :delete, class: "fi-trash alert boton_de_accion", 'aria-haspopup': "true", title: "Eliminar" 
+                = link_to '', unidad, method: :delete, class: "fi-trash alert boton_de_accion", :'aria-haspopup' => "true", title: "Eliminar" 
               - else
-                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+                = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", :'aria-haspopup' => "true", title: "No se puede eliminar"
 
 .row.show-for-small-only
   %div{class: "carousel"}
@@ -59,9 +59,9 @@
             %tr
               %th{scope: "row", rowspan: 3} Acciones
               %td
-                = link_to '', unidad, class: "fi-eye boton_de_accion", 'aria-haspopup': "true", title: "Ver"
-                = link_to '', edit_unidad_de_analisis_path(unidad), class: "fi-pencil boton_de_accion", 'aria-haspopup': "true", title: "Modificar"
+                = link_to '', unidad, class: "fi-eye boton_de_accion", :'aria-haspopup' => "true", title: "Ver"
+                = link_to '', edit_unidad_de_analisis_path(unidad), class: "fi-pencil boton_de_accion", :'aria-haspopup' => "true", title: "Modificar"
                 - if conjunto.modificable?
-                  = link_to '', unidad, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de unidades de análisis no se puede deshacer" } }, 'aria-haspopup': "true", title: "Eliminar" 
+                  = link_to '', unidad, method: :delete, class: "fi-trash alert boton_de_accion", data: { confirm: { title: '¿Estás seguro?', body: "La acción de eliminar un conjunto de unidades de análisis no se puede deshacer" } }, :'aria-haspopup' => "true", title: "Eliminar" 
                 - else
-                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", 'aria-haspopup': "true", title: "No se puede eliminar"
+                  = link_to '', "#", class: "fi-trash alert boton_de_accion disabled", :'aria-haspopup' => "true", title: "No se puede eliminar"

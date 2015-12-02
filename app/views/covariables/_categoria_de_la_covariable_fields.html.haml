@@ -15,6 +15,6 @@
         = f.input :descripcion, label: false, as: :string
   .small-1.columns.end
     - if @covariable.modificable?
-      = f.link_to_remove '', { class: "boton_de_accion alert fi-trash", style: "margin-top: 0.5rem;", 'aria-haspopup': "true", title: "Eliminar" }
+      = f.link_to_remove '', { class: "boton_de_accion alert fi-trash", style: "margin-top: 0.5rem;", :'aria-haspopup' => "true", title: "Eliminar" }
     - else
-      = link_to '', "#", {class: "boton_de_accion alert fi-trash disabled", style: "margin-top: 0.5rem;", 'aria-haspopup': "true", title: "No se puede eliminar"}
+      = link_to '', "#", {class: "boton_de_accion alert fi-trash disabled", style: "margin-top: 0.5rem;", :'aria-haspopup' => "true", title: "No se puede eliminar"}

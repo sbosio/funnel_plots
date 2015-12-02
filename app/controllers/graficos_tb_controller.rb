@@ -14,11 +14,11 @@ class GraficosTbController < ApplicationController
           created_user: usuario_actual.id
         ).map do |fuente|
           if fuente.datos.size > 0
-            [fuente.nombre, fuente.id, 'data-conjunto': fuente.conjunto_de_unidades_de_analisis.id]
+            [fuente.nombre, fuente.id, :'data-conjunto' => fuente.conjunto_de_unidades_de_analisis.id]
           else
             [
               fuente.nombre, fuente.id,
-              'data-conjunto': fuente.conjunto_de_unidades_de_analisis.id,
+              :'data-conjunto' => fuente.conjunto_de_unidades_de_analisis.id,
               disabled: true, title: "No se han cargado los datos"
             ]
           end

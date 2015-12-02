@@ -24,7 +24,7 @@ class GraficosController < ApplicationController
     @grafico = Grafico.new
     @tipos_de_evaluacion = TipoDeEvaluacion.all.order(:nombre).map do |tipo|
         if tipo.ruta_de_formulario.present?
-          [tipo.nombre, tipo.id, 'data-ruta': tipo.ruta_de_formulario]
+          [tipo.nombre, tipo.id, :'data-ruta' => tipo.ruta_de_formulario]
         else
           [tipo.nombre, tipo.id, disabled: true, title: "Aún no implementado"]
         end
@@ -36,7 +36,7 @@ class GraficosController < ApplicationController
   def edit
     @tipos_de_evaluacion = TipoDeEvaluacion.all.order(:nombre).map do |tipo|
         if tipo.ruta_de_formulario.present?
-          [tipo.nombre, tipo.id, 'data-ruta': tipo.ruta_de_formulario]
+          [tipo.nombre, tipo.id, :'data-ruta' => tipo.ruta_de_formulario]
         else
           [tipo.nombre, tipo.id, disabled: true, title: "Aún no implementado"]
         end
@@ -58,7 +58,7 @@ class GraficosController < ApplicationController
     else
       @tipos_de_evaluacion = TipoDeEvaluacion.all.order(:nombre).map do |tipo|
           if tipo.ruta_de_formulario.present?
-            [tipo.nombre, tipo.id, 'data-ruta': tipo.ruta_de_formulario]
+            [tipo.nombre, tipo.id, :'data-ruta' => tipo.ruta_de_formulario]
           else
             [tipo.nombre, tipo.id, disabled: true, title: "Aún no implementado"]
           end
@@ -83,7 +83,7 @@ class GraficosController < ApplicationController
     else
       @tipos_de_evaluacion = TipoDeEvaluacion.all.order(:nombre).map do |tipo|
           if tipo.ruta_de_formulario.present?
-            [tipo.nombre, tipo.id, 'data-ruta': tipo.ruta_de_formulario]
+            [tipo.nombre, tipo.id, :'data-ruta' => tipo.ruta_de_formulario]
           else
             [tipo.nombre, tipo.id, disabled: true, title: "Aún no implementado"]
           end

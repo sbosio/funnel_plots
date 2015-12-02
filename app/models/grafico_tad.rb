@@ -73,7 +73,9 @@ class GraficoTad < ActiveRecord::Base
     end
 
     # Ordenamos la serie de población de menor a mayor
-    serie_N = serie_N.sort_by{|unidad, valor| valor}.to_h
+    ordenar = {}
+    serie_N.sort_by{|unidad, valor| valor}.each{|i| ordenar.merge!(i[0] => i[1])}
+    serie_N = ordenar
 
     # Calculamos la media de la tasa global
     # TODO: Únicamente se grafica con un valor objetivo igual a la tasa media.

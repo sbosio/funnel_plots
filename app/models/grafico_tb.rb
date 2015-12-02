@@ -47,14 +47,16 @@ class GraficoTb < ActiveRecord::Base
     end
 
     # Ordenamos la serie de población de menor a mayor
-    serie_N = serie_N.sort_by{|unidad, valor| valor}.to_h
+    ordenar = {}
+    serie_N.sort_by{|unidad, valor| valor}.each{|i| ordenar.merge!(i[0] => i[1])}
+    serie_N = ordenar
 
     # Calculamos la media de la tasa global
     # TODO: Únicamente se grafica con un valor objetivo igual a la tasa media.
     #       Sumar una opción para establecer el valor objetivo a través de la interfaz.
     tasa_media = (serie_x.values.sum / serie_N.values.sum)
 
-    # Calculamos la series requeridas para el gráfico
+    # Calculamos las series requeridas para el gráfico
     # TODO: Está soldado el valor de desvíos estándares. Agregar una opción a la interfaz para que se
     #       tome de un valor pasado por el usuario.
     serie_lcs = {}

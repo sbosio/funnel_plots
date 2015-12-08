@@ -106,11 +106,21 @@ class GraficoTb < ActiveRecord::Base
       serie_Y.merge!(unidad => (serie_x[unidad] / valor * mult))
     end
 
+    # Buscar el valor en el eje Y más bajo para fijar la escala
+    min_Y = serie_Y.values.min.to_f
+    min_Y = serie_lci.values.first.to_f if min_Y > serie_lci.values.first.to_f
+
+    # Buscar el valor en el eje Y más alto para fijar la escala
+    max_Y = serie_Y.values.max.to_f
+    max_Y = serie_lcs.values.first.to_f if max_Y < serie_lcs.values.first.to_f
+
     LazyHighCharts::HighChart.new('graph') do |f|
       f.chart(type: 'scatter', zoomType: 'xy')
       f.title(text: grafico.titulo) if grafico.titulo.present?
       f.subtitle(text: grafico.subtitulo) if grafico.subtitulo.present?
       f.legend(enabled: false)
+      f.exporting(scale: 4)
+
       f.xAxis(
           title: (
             grafico.etiqueta_eje_x.present? ?
@@ -132,15 +142,17 @@ class GraficoTb < ActiveRecord::Base
             ),
           startOnTick: false,
           endOnTick: false,
-          min: 0.0,
-          max: serie_lcs.values.first.to_f
+          min: min_Y,
+          max: max_Y
         )
 
       f.plotOptions(
           scatter: {
               tooltip: {
                   headerFormat: '<b>{point.key}</b><br/>',
-                  pointFormat: 'Tasa: <b>{point.y:.1f}</b><br/>Nacidos vivos: <b>{point.x}</b>'
+                  pointFormat:
+                    "Tasa: <b>{point.y:.1f}</b><br/>" +
+                    "#{grafico.etiqueta_eje_x.present? ? grafico.etiqueta_eje_x : 'Denominador'}: <b>{point.x}</b>"
                 }
             },
           spline: {

@@ -1,6 +1,6 @@
 - if @categorias.size == 0
   %tr
-    %th{scope: row}= @conjunto_de_datos.datos[@indice_de_dato].unidad_de_analisis.nombre
+    %th{scope: "row"}= @conjunto_de_datos.datos[@indice_de_dato].unidad_de_analisis.nombre
     %td{style: "padding: 0;"}
       = f.input :unidad_de_analisis_id, as: :hidden
       = f.input :valor, label: false, as: :string, input_html: {style: "margin: 0; text-align: right;"}

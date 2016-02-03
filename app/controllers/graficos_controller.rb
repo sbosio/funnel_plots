@@ -97,10 +97,8 @@ class GraficosController < ApplicationController
   # DELETE /graficos/1
   def destroy
     raise Acl9::AccessDenied unless @grafico.modificable?
-
     @grafico.destroy
-    redirect_to graficos_url,
-      notice: 'Se eliminó correctamente el gráfico.'
+    redirect_to graficos_url, notice: 'Se eliminó correctamente el gráfico.'
   end
 
   private

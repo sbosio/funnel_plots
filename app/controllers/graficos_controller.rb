@@ -34,6 +34,7 @@ class GraficosController < ApplicationController
 
   # GET /graficos/1/edit
   def edit
+    raise Acl9::AccessDenied if @grafico.propietario != usuario_actual
     @tipos_de_evaluacion = TipoDeEvaluacion.all.order(:nombre).map do |tipo|
         if tipo.ruta_de_formulario.present?
           [tipo.nombre, tipo.id, :'data-ruta' => tipo.ruta_de_formulario]
@@ -105,13 +106,13 @@ class GraficosController < ApplicationController
   private
     def establecer_grafico
       @grafico = Grafico.find(params[:id])
-      raise Acl9::AccessDenied if @grafico.propietario != usuario_actual
+      raise Acl9::AccessDenied if @grafico.propietario != usuario_actual && !@grafico.publico
     end
 
     def grafico_parametros
       params.require(:grafico).permit(
           :nombre, :descripcion, :tipo_de_evaluacion_id, :titulo, :subtitulo,
-          :etiqueta_eje_x, :etiqueta_eje_y
+          :etiqueta_eje_x, :etiqueta_eje_y, :publico
         )
     end
 

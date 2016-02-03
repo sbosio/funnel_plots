@@ -1,5 +1,5 @@
 = content_for :panel do
-  = render partial: 'shared/panel', locals: { titulo: "Graficos", accion: "Ver", botones: [{texto: "Listado", ruta: graficos_path}, {texto: "Modificar", ruta: edit_grafico_path(@grafico)}] }
+  = render partial: 'shared/panel', locals: { titulo: "Graficos", accion: "Ver", botones: (@grafico.propietario == usuario_actual ? [{texto: "Listado", ruta: graficos_path}, {texto: "Modificar", ruta: edit_grafico_path(@grafico)}] : [])}
 
 .row
   .small-12.columns

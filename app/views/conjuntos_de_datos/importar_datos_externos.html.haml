@@ -1,0 +1,16 @@
+.row
+  .small-12.columns
+    = render partial: 'shared/errores_crud', locals: { registro: @conjunto_de_datos }
+
+= simple_form_for(@conjunto_de_datos) do |f|
+
+  .row
+    .small-12.columns
+      = f.input :datos_externos, label: "Área de datos", as: :text, placeholder: "Copie y pegue los datos en esta área", input_html: {style: "height: 20rem;"}
+
+  %br
+  %br
+
+  .row
+    .small-12.medium-6.large-4.columns
+      = f.button :submit, "Analizar datos"

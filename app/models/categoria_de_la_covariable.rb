@@ -15,6 +15,7 @@ class CategoriaDeLaCovariable < ActiveRecord::Base
               }
 
   def descripcion_corta
+    return nil unless descripcion.present?
     return descripcion if descripcion.length < 130
     descripcion[0.127] + "..."
   end

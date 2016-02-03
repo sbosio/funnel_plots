@@ -51,9 +51,10 @@ class CovariablesController < ApplicationController
 
   # DELETE /covariables/1
   def destroy
+    raise Acl9::AccessDenied unless @covariable.modificable?
+    @covariable.categorias_de_la_covariable.delete_all
     @covariable.destroy
-    redirect_to covariables_path,
-      notice: 'Se eliminó correctamente la covariable.'
+    redirect_to covariables_path, notice: 'Se eliminó correctamente la covariable.'
   end
 
   private

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151130221731) do
+ActiveRecord::Schema.define(version: 20160203130516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,19 +85,20 @@ ActiveRecord::Schema.define(version: 20151130221731) do
   add_index "datos", ["unidad_de_analisis_id"], name: "index_datos_on_unidad_de_analisis_id", using: :btree
 
   create_table "graficos", force: :cascade do |t|
-    t.string   "nombre",                null: false
+    t.string   "nombre",                                null: false
     t.text     "descripcion"
-    t.integer  "tipo_de_evaluacion_id", null: false
-    t.integer  "implementacion_id",     null: false
-    t.string   "implementacion_type",   null: false
+    t.integer  "tipo_de_evaluacion_id",                 null: false
+    t.integer  "implementacion_id",                     null: false
+    t.string   "implementacion_type",                   null: false
     t.string   "titulo"
     t.string   "subtitulo"
     t.string   "etiqueta_eje_x"
     t.string   "etiqueta_eje_y"
-    t.integer  "created_user",          null: false
-    t.integer  "updated_user",          null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.integer  "created_user",                          null: false
+    t.integer  "updated_user",                          null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.boolean  "publico",               default: false
   end
 
   add_index "graficos", ["created_user"], name: "index_graficos_on_created_user", using: :btree

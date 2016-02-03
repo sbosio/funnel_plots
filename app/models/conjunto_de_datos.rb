@@ -18,7 +18,11 @@ class ConjuntoDeDatos < ActiveRecord::Base
   # Modelo anidado: Dato
   accepts_nested_attributes_for :datos, allow_destroy: false
 
+  # Atributos no persistidos (para importación de datos externos)
+  attr_accessor :datos_externos
+
   def descripcion_corta
+    return nil unless descripcion.present?
     return descripcion if descripcion.length < 130
     descripcion[0..127] + "..."
   end

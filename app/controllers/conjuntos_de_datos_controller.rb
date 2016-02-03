@@ -1,3 +1,4 @@
+require 'csv'
 class ConjuntosDeDatosController < ApplicationController
   before_action :autenticar_usuario!
   before_action :establecer_conjunto_de_datos, only: [:show, :edit, :update, :destroy, :tabla_de_datos]
@@ -29,13 +30,63 @@ class ConjuntosDeDatosController < ApplicationController
 
   # POST /conjuntos_de_datos
   def create
-    @conjunto_de_datos = ConjuntoDeDatos.new
-    @conjunto_de_datos.attributes = conjunto_de_datos_parametros
+    if params.require(:conjunto_de_datos).permit(:datos_externos).member? :datos_externos
+      ActiveRecord::Base.transaction do
+        # Horripilante, vamos a suponer todo para hacerlo más rápido, pero hay que cambiarlo por un Wizard
+        # El parseo va a ser:
+        # De la primer fila sacamos los nombres y de las restantes los datos, según lo siguiente:
+        # - Primer columna: nombre de las unidades de análisis.
+        # - Segunda columna: conjunto de datos 1 (población).
+        # - Tercera columna: conjunto de datos 2 (eventos observados).
+        datos = CSV::parse(params.require(:conjunto_de_datos).permit(:datos_externos)[:datos_externos], {col_sep: "\t"})
+        conjunto_de_unidades_de_analisis = ConjuntoDeUnidadesDeAnalisis.new
+        conjunto_de_unidades_de_analisis.nombre = datos.first[0]
+        conjunto_de_unidades_de_analisis.tipo_de_unidades_de_analisis_id = 2
+        datos[1..-1].each do |dato|
+          conjunto_de_unidades_de_analisis.unidades_de_analisis.build({
+              nombre: dato[0]
+            })
+        end
+        conjunto_de_unidades_de_analisis.save!
 
-    if @conjunto_de_datos.save
-      redirect_to @conjunto_de_datos, notice: 'El conjunto de datos se creó correctamente.'
+        # Conjunto de datos 1
+        conjunto_de_datos = ConjuntoDeDatos.new
+        conjunto_de_datos.nombre = datos.first[1]
+        conjunto_de_datos.conjunto_de_unidades_de_analisis_id = conjunto_de_unidades_de_analisis.id
+        conjunto_de_datos.covariable_id = nil
+        datos[1..-1].each_with_index do |dato, i|
+          conjunto_de_datos.datos.build({
+            unidad_de_analisis_id: conjunto_de_unidades_de_analisis.unidades_de_analisis[i].id,
+            categoria_de_la_covariable_id: nil,
+            valor: dato[1]
+          })
+        end
+        conjunto_de_datos.save!
+
+        # Conjunto de datos 2
+        conjunto_de_datos = ConjuntoDeDatos.new
+        conjunto_de_datos.nombre = datos.first[2]
+        conjunto_de_datos.conjunto_de_unidades_de_analisis_id = conjunto_de_unidades_de_analisis.id
+        conjunto_de_datos.covariable_id = nil
+        datos[1..-1].each_with_index do |dato, i|
+          conjunto_de_datos.datos.build({
+            unidad_de_analisis_id: conjunto_de_unidades_de_analisis.unidades_de_analisis[i].id,
+            categoria_de_la_covariable_id: nil,
+            valor: dato[2]
+          })
+        end
+        conjunto_de_datos.save!        
+      end
+      redirect_to conjuntos_de_datos_path, notice: 'Datos procesados correctamente.'
     else
-      render :new
+      @conjunto_de_datos = ConjuntoDeDatos.new
+      @conjunto_de_datos.attributes = conjunto_de_datos_parametros
+
+      if @conjunto_de_datos.save
+        redirect_to @conjunto_de_datos, notice: 'El conjunto de datos se creó correctamente.'
+      else
+        render :new
+      end
     end
   end
 
@@ -62,6 +113,12 @@ class ConjuntosDeDatosController < ApplicationController
       notice: 'Se eliminó correctamente el conjunto de datos.'
   end
 
+  # GET /conjuntos_de_datos/importar_datos_externos
+  def importar_datos_externos
+    @conjunto_de_datos = ConjuntoDeDatos.new
+  end
+
+  # GET /conjuntos_de_datos/1/tabla_de_datos
   def tabla_de_datos
 
     if @conjunto_de_datos.datos.size == 0
@@ -99,7 +156,7 @@ class ConjuntosDeDatosController < ApplicationController
     def conjunto_de_datos_parametros
       if @conjunto_de_datos.modificable?
         params.require(:conjunto_de_datos).permit(
-            :nombre, :descripcion, :conjunto_de_unidades_de_analisis_id, :covariable_id,
+            :nombre, :descripcion, :conjunto_de_unidades_de_analisis_id, :covariable_id, :datos_externos,
             datos_attributes: [:id, :unidad_de_analisis_id, :categoria_de_la_covariable_id, :valor]
           )
       else

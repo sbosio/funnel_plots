@@ -6,8 +6,8 @@ $(document).ready(function() {
       $.ajax({
         url: ruta + "?" + $.param($("#implementacion").data("grafico")) + "&" + $.param({"validar": $("#implementacion").data("validar")})
       }).done(function(html_text) {
-        var text = html_text.replace(/.*<!-- start -->/m, "")
-        text = text.replace(/\/<!-- end -->.*/m, "")
+        var text = html_text.replace(/.*<!-- start -->/m, "");
+        text = text.replace(/\/<!-- end -->.*/m, "");
         $("#implementacion").html(text);
         // Configuraciones específicas de las distintas implementaciones de gráficos (si las requieren)
         // luego de cargar el subformulario de implementación

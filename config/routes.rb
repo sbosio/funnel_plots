@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Datos
   resources :conjuntos_de_datos
   get "conjuntos_de_datos/:id/tabla_de_datos", to: "conjuntos_de_datos#tabla_de_datos", as: :tabla_de_datos_del_conjunto
+  get "importar_datos_externos", to: "conjuntos_de_datos#importar_datos_externos", as: :importar_datos_externos
 
   # Gráficos
   get "graficos_tb/form", to: "graficos_tb#form"

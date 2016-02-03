@@ -23,6 +23,7 @@ class Covariable < ActiveRecord::Base
   end
 
   def descripcion_corta
+    return nil unless descripcion.present?
     return descripcion if descripcion.length < 120
     descripcion[0..117] + "..."
   end

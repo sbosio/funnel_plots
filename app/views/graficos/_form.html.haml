@@ -25,6 +25,14 @@
 
   #implementacion{ :'data-grafico' => @grafico.to_json(root: true, except: [:created_user, :updated_user, :created_at, :updated_at], include: [:implementacion]), :'data-validar' => @validar_implementacion.to_s }
 
+  .row
+    .small-12.columns
+      %h5.subheader Control de acceso
+
+  .row
+    .small-12.columns
+      = f.input :publico, label: "Permitir la visualización a cualquier usuario registrado"
+
   #ocultas.row
     .small-12.columns
       %h5.subheader

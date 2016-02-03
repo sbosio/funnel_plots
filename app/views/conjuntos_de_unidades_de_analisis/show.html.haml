@@ -10,7 +10,7 @@
   .small-12.columns
     %label Descripción
     %h6.input-panel
-      - @conjunto_de_unidades_de_analisis.descripcion.split("\n").each do |linea|
+      - (@conjunto_de_unidades_de_analisis.descripcion || "").split("\n").each do |linea|
         = linea
         %br
 .row

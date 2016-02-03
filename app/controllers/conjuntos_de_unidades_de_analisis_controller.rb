@@ -50,7 +50,7 @@ class ConjuntosDeUnidadesDeAnalisisController < ApplicationController
   # DELETE /conjuntos_de_unidades_de_analisis/1
   def destroy
     raise Acl9::AccessDenied unless @conjunto_de_unidades_de_analisis.modificable?
-
+    @conjunto_de_unidades_de_analisis.unidades_de_analisis.delete_all
     @conjunto_de_unidades_de_analisis.destroy
     redirect_to conjuntos_de_unidades_de_analisis_url, notice: 'Se eliminó correctamente el conjunto de unidades de análisis.'
   end

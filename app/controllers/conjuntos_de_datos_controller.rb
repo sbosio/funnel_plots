@@ -107,10 +107,9 @@ class ConjuntosDeDatosController < ApplicationController
   # DELETE /conjuntos_de_datos/1
   def destroy
     raise Acl9::AccessDenied unless @conjunto_de_datos.eliminable?
-
+    @conjunto_de_datos.datos.delete_all
     @conjunto_de_datos.destroy
-    redirect_to conjuntos_de_datos_url,
-      notice: 'Se eliminó correctamente el conjunto de datos.'
+    redirect_to conjuntos_de_datos_url, notice: 'Se eliminó correctamente el conjunto de datos.'
   end
 
   # GET /conjuntos_de_datos/importar_datos_externos
